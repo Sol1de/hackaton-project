@@ -5,9 +5,9 @@ import { z } from "zod";
 import { User } from "../models/users.model";
 import { UserService } from "../services/user.service";
 
-@singleton()
+@injectable()
 export class UserController {
-    constructor(@inject(UserService) private userService: UserService) {}
+    constructor(private userService: UserService) {}
 
     public async register(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
@@ -20,7 +20,7 @@ export class UserController {
             });
         } catch (error) {
             // Gestion des erreurs de validation Zod
-            if (error instanceof z.ZodError) {
+            /*if (error instanceof z.ZodError) {
                 res.status(400).json({
                     message: "Erreur de validation",
                     details: error.errors.map((err) => ({
@@ -35,7 +35,7 @@ export class UserController {
             res.status(500).json({
                 message: "Une erreur est survenue lors de la création de l'utilisateur",
                 details: error instanceof Error ? error.message : "Erreur inconnue",
-            });
+            });*/
         }
     }
 }
