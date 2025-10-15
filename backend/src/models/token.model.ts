@@ -11,16 +11,18 @@ const tokenShema = new mongoose.Schema({
 
     createdAt: {
         type: Date,
-        default: Date.now() + 86400000
+        default: Date.now()
     },
 
     updatedAt: {
         type: Date,
-        default: Date.now() + 86400000
+        default: Date.now()
     }, 
 
     expiresAt: {
-
+        type: Date,
+        default: () => new Date(Date.now() + 86400000),
+        index: { exprires: 0}
     }
 
 })
