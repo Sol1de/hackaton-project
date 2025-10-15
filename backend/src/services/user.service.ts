@@ -2,7 +2,6 @@ import {injectable, singleton} from "tsyringe";
 import { RegisterUserInput } from "../schemas/user.schema";
 import { User } from "../models/users.model";
 
-@injectable()
 export class UserService {
     constructor() {}
 
