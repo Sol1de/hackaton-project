@@ -2,16 +2,22 @@ import mongoose from "mongoose";
 
 const postsShema = new mongoose.Schema({
 
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
+    },
+
     title: {
         type: String,
         required: true,
-        maxlength: [100, 'Le titre doit contenir 100 caractères max']
+        maxlength: [100, 'The title must contain a maximum of 100 characters.']
     },
 
     content: {
         type: String,
         required: true,
-        maxlength: [1000, 'Le titre doit contenir 1000 caractères max']
+        maxlength: [1000, 'The title must contain a maximum of 1000 characters.']
     },
     
 }); 
