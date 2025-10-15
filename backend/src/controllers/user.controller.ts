@@ -1,29 +1,22 @@
+import {inject, injectable, singleton} from "tsyringe";
 import { Request, Response, NextFunction } from "express";
 import { registerUserSchema, RegisterUserInput } from "../schemas/user.schema";
 import { z } from "zod";
 import { User } from "../models/users.model";
+import { UserService } from "../services/user.service";
 
+@singleton()
 export class UserController {
-    constructor() {}
+    constructor(@inject(UserService) private userService: UserService) {}
 
     public async register(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const userData: RegisterUserInput = registerUserSchema.parse(req.body);
-
-            const user = {
-                email: userData.email,
-                password: userData.password,
-                firstname: userData.firstname,
-                lastname: userData.lastname,
-                avatar: userData.avatar,
-                description: userData.description,
-            };
-
-            const createdUser = await User.create(user);
+            const user = await this.userService.createUser(userData);
 
             res.status(201).json({
                 message: "User created",
-                user: createdUser,
+                user: user,
             });
         } catch (error) {
             // Gestion des erreurs de validation Zod
@@ -46,6 +39,3 @@ export class UserController {
         }
     }
 }
-
-// Instance singleton du contrôleur
-export const userController = new UserController();

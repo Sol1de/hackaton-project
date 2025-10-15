@@ -1,5 +1,8 @@
 import { Router } from 'express';
-import { userController } from '../controllers/user.controller';
+import { container } from 'tsyringe';
+import { UserController } from '../controllers/user.controller';
+
+const userController = container.resolve(UserController);
 
 export const userRouter = Router();
 
