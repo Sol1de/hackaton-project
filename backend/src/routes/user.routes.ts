@@ -1,10 +1,9 @@
 import { Router } from 'express';
+import { userController } from '../controllers/user.controller';
 
 export const userRouter = Router();
 
-userRouter.post('/register', (req, res) => {
-    res.send('Route register');
-});
+userRouter.post('/register', userController.register.bind(userController));
 
 userRouter.post('/login', (req, res) => {
     res.send('Route login');
