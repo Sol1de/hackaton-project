@@ -18,6 +18,7 @@ import AboutView from '../views/AboutView.vue'
 
 const routes = [
   { path: '/', component: HomeView },
+  { path: '/home', component: HomeView },
   { path: '/about', component: AboutView },
 ]
 
