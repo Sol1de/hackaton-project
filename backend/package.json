@@ -11,7 +11,9 @@
     "start": "node dist/app.js",
     "db:seed": "ts-node src/seeders/index.seeder.ts",
     "db:init": "ts-node src/config/db.config.ts",
-    "db:connect": "ts-node src/config/db.connection.ts"
+    "db:connect": "ts-node src/config/db.connection.ts",
+    "db:init:prod": "node dist/config/db.config.js",
+    "build:prod": "npm run build && npm run db:init:prod"
   },
   "keywords": [],
   "author": "",
