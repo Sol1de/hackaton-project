@@ -33,23 +33,27 @@
     </transition>
 
     <!-- Main Content -->
-    <div class="flex-1 flex flex-col items-center bg-gray-50 overflow-hidden">
-      <p class="text-lg my-6 font-semibold">SOCIAL MEDIA</p>
+    <div class="flex-1 flex flex-col items-center bg-gray-50 overflow-auto p-6">
+      <!-- User Info -->
+      <div class="text-center mb-8">
+        <h1 class="text-3xl font-bold">{{ user.firstName }} {{ user.lastName }}</h1>
+      </div>
 
-      <!-- Zone scrollable -->
-      <div class="flex flex-col gap-8 w-full max-w-2xl overflow-y-auto px-4 pb-10"
-          style="max-height: calc(100vh - 100px);">
-        <PostCard />
-        <PostCard />
-        <PostCard />
+      <!-- User Posts -->
+      <div class="flex flex-col gap-6 w-full max-w-2xl">
+        <PostCard 
+          v-for="(post, index) in user.posts" 
+          :key="index" 
+          :title="post.title" 
+          :content="post.content"
+        />
       </div>
     </div>
-
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref } from 'vue'
 import PostCard from '@/components/PostCard.vue'
 
 const menuOpen = ref(false)
@@ -59,16 +63,14 @@ const toggleMenu = () => {
   menuOpen.value = !menuOpen.value
 }
 
-const handleResize = () => {
-  isDesktop.value = window.innerWidth >= 768
-  if (isDesktop.value) menuOpen.value = false
-}
-
-onMounted(() => {
-  window.addEventListener('resize', handleResize)
-})
-onUnmounted(() => {
-  window.removeEventListener('resize', handleResize)
+// Simuler un utilisateur (à remplacer par votre API)
+const user = ref({
+  firstName: 'Jean',
+  lastName: 'Dupont',
+  posts: [
+    { title: 'Mon premier post', content: 'Voici le contenu de mon premier post !' },
+    { title: 'Un autre post', content: 'Encore un post sympa pour tester le profil.' }
+  ]
 })
 </script>
 
