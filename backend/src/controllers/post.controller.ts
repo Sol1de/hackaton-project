@@ -19,7 +19,20 @@ export class PostController {
                 posts: posts,
             })
         } catch (error) {
-            next(error);
+            next(error)
+        }
+    }
+
+    public async getPost(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { postId } = req.params
+            const post = await this.postService.getPost(postId)
+
+            res.status(201).json({
+                post: post,
+            })
+        } catch (error) {
+            next(error)
         }
     }
 

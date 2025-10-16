@@ -15,9 +15,7 @@ postRouter.post('/',
 
 postRouter.get('/', postController.getPosts.bind(postController))
 
-postRouter.get('/:id', (req, res) => {
-    res.send('Route get post by id')
-})
+postRouter.get('/:postId', postController.getPost.bind(postController))
 
 postRouter.put('/:id', postController.updatePost.bind(postController))
 

@@ -8,6 +8,10 @@ export class PostService {
         return Post.find().sort({createdAt: -1}).populate('userId', 'firstname lastname email avatar')
     }
 
+    async getPost(postId: string){
+        return Post.findOne({ _id: postId }).populate('userId', 'firstname lastname email avatar')
+    }
+
     async createPost(content: string, title: string, userId: mongoose.Types.ObjectId){
         const post: PostInterface = {
             content,
