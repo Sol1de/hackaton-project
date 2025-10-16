@@ -25,10 +25,9 @@ export class EmailError extends Error {
   }
 
   static invalidEmail(email: string): createError.HttpError {
-    return createError(422, 'Invalid email', {
+    return createError(400, 'Invalid email', {
       code: 'INVALID_EMAIL',
       email,
-      count: Object.keys(email).length
     });
   }
 
@@ -36,7 +35,7 @@ export class EmailError extends Error {
     return createError(409, 'Email already in use', {
       code: 'EMAIL_ALREADY_IN_USE',
       email,
-      count: Object.keys(email).length
+      suggestion: `Try another email address.`,
     });
   }
 }
