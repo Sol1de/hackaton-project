@@ -1,19 +1,23 @@
 import { Request, Response, NextFunction } from "express"
-import {UtilsService} from "../services/utils.service";
+import {TokenService} from "../services/token.service";
 import {injectable} from "tsyringe";
 
 @injectable()
 export class AuthMiddleware {
-    constructor(private utilsService: UtilsService) {}
+    constructor(private tokenService: TokenService) {}
 
-    public authMiddleware(req: Request, res: Response, next: NextFunction) {
-        const token = req.headers['authorization']
+    public async authMiddleware(req: Request, res: Response, next: NextFunction) {
+        let token = req.headers['authorization']
 
         if (!token) {
             return res.status(403).json({ message: 'No token provided' })
         }
 
-        this.utilsService.verifyToken(token)
+        if (token.startsWith('Bearer ')) {
+            token = token.substring(7)
+        }
+
+        await this.tokenService.verifyToken(token)
         next()
     }
 }

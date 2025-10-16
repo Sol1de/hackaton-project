@@ -8,3 +8,8 @@ export interface TokenInterface {
     createdAt?: Date
     updatedAt?: Date
 }
+
+export interface TokenPayloadInterface {
+    userId: mongoose.Types.ObjectId
+    expiresAt: Date
+}

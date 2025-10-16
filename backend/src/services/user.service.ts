@@ -4,10 +4,14 @@ import {injectable} from "tsyringe"
 import {UtilsService} from "./utils.service"
 import {Token} from "../models/tokens.model";
 import {TokenInterface} from "../types/token.type";
+import {TokenService} from "./token.service";
 
 @injectable()
 export class UserService {
-    constructor(private utilsService: UtilsService) {}
+    constructor(
+        private utilsService: UtilsService,
+        private tokenService: TokenService
+    ) {}
 
     public async createUser(userData: RegisterUserInput) {
         const hashedPassword = await this.utilsService.hashPassword(userData.password)
@@ -36,7 +40,7 @@ export class UserService {
             throw new Error("Invalid password")
         }
 
-        const generatedToken = this.utilsService.generateToken(user._id.toString())
+        const generatedToken = this.tokenService.generateToken(user._id)
         const token: TokenInterface = {
             token: generatedToken,
             userId: user._id,
