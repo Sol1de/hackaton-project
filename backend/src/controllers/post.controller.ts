@@ -1,7 +1,6 @@
 import { injectable } from "tsyringe"
 import { Request, Response, NextFunction } from "express"
 import { PostService } from "../services/post.service"
-import { Post } from "../models/posts.model"
 import { TokenService } from "../services/token.service"
 
 @injectable()
@@ -15,7 +14,7 @@ export class PostController {
         try {
             const posts = await this.postService.getPosts()
 
-            res.status(201).json({
+            res.status(200).json({
                 posts: posts,
             })
         } catch (error) {
@@ -28,7 +27,7 @@ export class PostController {
             const { postId } = req.params
             const post = await this.postService.getPost(postId)
 
-            res.status(201).json({
+            res.status(200).json({
                 post: post,
             })
         } catch (error) {
@@ -50,15 +49,16 @@ export class PostController {
         }
     }
 
-        public async updatePost(req: Request, res: Response, next: NextFunction) {
+    public async updatePost(req: Request, res: Response, next: NextFunction) {
         try {
             const { id } = req.params
             const { content } = req.body
-            const updatedPost = await Post.findByIdAndUpdate(id, { content }, { new: true })
-            if (!updatedPost) {
-                return res.status(404).json({ message: "Post not found" })
-            }
-            res.json({ message: "Post updated", post: updatedPost })
+            const updatedPost = await this.postService.updatePost(id, content)
+
+            res.status(200).json({ 
+                message: "Post updated", 
+                post: updatedPost 
+            })
         } catch (error) {
             next(error)
         }
@@ -67,11 +67,12 @@ export class PostController {
     public async deletePost(req: Request, res: Response, next: NextFunction) {
         try {
             const { id } = req.params
-            const deletedPost = await Post.findByIdAndDelete(id)
-            if (!deletedPost) {
-                return res.status(404).json({ message: "Post not found" })
-            }
-            res.json({ message: "Post deleted", post: deletedPost })
+            const deletedPost = await this.postService.deletePost(id)
+
+            res.status(200).json({ 
+                message: "Post deleted", 
+                post: deletedPost 
+            })
         } catch (error) {
             next(error)
         }
