@@ -1,6 +1,6 @@
-import { Post } from "../models/posts.model";
-import { PostInterface } from "../types/post.type";
-import mongoose from "mongoose";
+import { Post } from "../models/posts.model"
+import { PostInterface } from "../types/post.type"
+import mongoose from "mongoose"
 
 export class PostService {
 
@@ -19,14 +19,14 @@ export class PostService {
             title
         }
 
-        return Post.create(post);
+        return Post.create(post)
     }
 
     async updatePost(id: string, content: string){
-        return await Post.findByIdAndUpdate(id, { content }, { new: true });
+        return await Post.findByIdAndUpdate(id, { content }, { new: true })
     }
 
     async deletePost(id: string){
-        return await Post.findByIdAndDelete(id);
+        return await Post.findByIdAndDelete(id)
     }
 }
