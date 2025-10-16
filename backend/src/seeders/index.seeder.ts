@@ -10,7 +10,6 @@ async function runSeeders() {
         await connectDB();
         const userSeeder = new UserSeeder();
 
-        // Créer des utilisateurs
         await userSeeder.createUser({
             email: 'john@exemple.com',
             password: 'password123',
