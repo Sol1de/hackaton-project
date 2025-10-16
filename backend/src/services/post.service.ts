@@ -5,7 +5,7 @@ export class PostService {
     constructor() {}
 
     async getPosts(){
-        return await Post.find().sort({createdAt: -1}).populate('userId', 'username').populate('postId', 'title');
+        return Post.find().sort({createdAt: -1}).populate('userId', 'firstname lastname email avatar')
     }
 
     async createPost(content: string, userId: string, title: string){

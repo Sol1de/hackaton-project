@@ -9,7 +9,9 @@ const authMiddleware = container.resolve(AuthMiddleware)
 
 export const postRouter = Router()
 
-postRouter.post('/', postController.createPost.bind(postController))
+postRouter.post('/',
+    authMiddleware.authenticate.bind(authMiddleware),
+    postController.createPost.bind(postController))
 
 postRouter.get('/', postController.getPosts.bind(postController))
 

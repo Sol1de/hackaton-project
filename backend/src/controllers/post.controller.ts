@@ -10,7 +10,10 @@ export class PostController {
     public async getPosts(req: Request, res: Response, next: NextFunction) {
         try {
             const posts = await this.postService.getPosts();
-            res.json(posts);
+
+            res.status(201).json({
+                posts: posts,
+            })
         } catch (error) {
             next(error);
         }
