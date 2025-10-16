@@ -1,22 +1,21 @@
 import { Post } from "../models/posts.model";
+import { PostInterface } from "../types/post.type";
+import mongoose from "mongoose";
 
 export class PostService {
-
-    constructor() {}
 
     async getPosts(){
         return Post.find().sort({createdAt: -1}).populate('userId', 'firstname lastname email avatar')
     }
 
-    async createPost(content: string, userId: string, title: string){
-        const post = {
+    async createPost(content: string, title: string, userId: mongoose.Types.ObjectId){
+        const post: PostInterface = {
             content,
             userId,
             title
         }
 
-        const newPost = Post.create(post);
-        return newPost
+        return Post.create(post);
     }
 
     async updatePost(id: string, content: string){

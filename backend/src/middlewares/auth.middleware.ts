@@ -9,16 +9,7 @@ export class AuthMiddleware {
 
     public async authenticate(req: Request, res: Response, next: NextFunction) {
         try {
-            let token = req.headers['authorization']
-
-            if (!token) {
-                throw TokenError.missingToken()
-            }
-
-            if (token.startsWith('Bearer ')) {
-                token = token.substring(7)
-            }
-
+            const token = this.tokenService.getToken(req)
             await this.tokenService.verifyToken(token)
             next()
         } catch (error) {
