@@ -21,6 +21,11 @@ const tokenSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+
+    userAgent: {
+        type: String,
+        required: true,
+    }
 }, {
     timestamps: true
 });

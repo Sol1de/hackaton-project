@@ -25,7 +25,8 @@ export class UserController {
         try {
             const userData: LoginUserInput = loginUserSchema.parse(req.body)
             const ipAdress = req.ip ||req.socket.remoteAddress as string
-            const { user, token } = await this.userService.loginUser(userData, ipAdress)
+            const userAgent = req.headers['user-agent'] as string
+            const { user, token } = await this.userService.loginUser(userData, ipAdress, userAgent)
 
             res.status(200).json({
                 message: "User logged in",
