@@ -25,12 +25,13 @@ export class TokenService {
         }
     }
 
-    public generateToken(userId: mongoose.Types.ObjectId) {
+    public generateToken(userId: mongoose.Types.ObjectId, ipAdress: string) {
         const expiresAt = new Date(Date.now() + (this.TOKEN_EXPIRY_HOURS * 60 * 60 * 1000))
 
         const payload: TokenPayloadInterface = {
             userId,
-            expiresAt
+            expiresAt,
+            ipAdress
         }
 
         const payloadString = JSON.stringify(payload)

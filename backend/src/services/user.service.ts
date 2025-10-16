@@ -27,7 +27,7 @@ export class UserService {
         return await User.create(user)
     }
 
-    public async loginUser(userData: LoginUserInput) {
+    public async loginUser(userData: LoginUserInput, ipAdress: string) {
         const user = await User.findOne({ email: userData.email })
 
         if (!user) {
@@ -40,11 +40,12 @@ export class UserService {
             throw new Error("Invalid password")
         }
 
-        const generatedToken = this.tokenService.generateToken(user._id)
+        const generatedToken = this.tokenService.generateToken(user._id, ipAdress)
         const token: TokenInterface = {
             token: generatedToken,
             userId: user._id,
-            expiresAt: new Date(Date.now() + 3600000)
+            expiresAt: new Date(Date.now() + 3600000),
+            ipAdress: ipAdress,
         }
         await Token.create(token)
 

@@ -15,7 +15,12 @@ const tokenSchema = new mongoose.Schema({
     expiresAt: {
         type: Date,
         required: true
-    }
+    },
+
+    ipAdress: {
+        type: String,
+        required: true,
+    },
 }, {
     timestamps: true
 });
