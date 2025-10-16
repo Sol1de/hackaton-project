@@ -1,4 +1,3 @@
-/*import {email} from*/
 import createError from "http-errors";
 export class EmailError extends Error {
   static invalidEmail(email: string): createError.HttpError {

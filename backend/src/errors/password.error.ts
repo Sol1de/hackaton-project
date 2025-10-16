@@ -1,4 +1,3 @@
-//import {password} from
 import createError from "http-errors";
 export class PasswordError extends Error {
     static passwordTooShort(password: string): createError.HttpError {
