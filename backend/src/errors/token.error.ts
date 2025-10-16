@@ -1,5 +1,5 @@
-import createError from "http-errors";
-import { BaseError } from "./base.error";
+import createError from "http-errors"
+import { BaseError } from "./base.error"
 
 export class TokenError extends BaseError {
     static invalidToken(): createError.HttpError {
@@ -8,7 +8,7 @@ export class TokenError extends BaseError {
             "Invalid token",
             "INVALID_TOKEN",
             { message: "Invalid provided token" }
-        );
+        )
     }
 
     static expiredToken(): createError.HttpError {
@@ -17,7 +17,7 @@ export class TokenError extends BaseError {
             "Token expired",
             "EXPIRED_TOKEN",
             { message: "Your session has expired. Please log in again." }
-        );
+        )
     }
 
     static missingToken(): createError.HttpError {
@@ -26,15 +26,6 @@ export class TokenError extends BaseError {
             "Missing token",
             "MISSING_TOKEN",
             { message: "No token provided." }
-        );
-    }
-
-    static tokenGenerationFailed(): createError.HttpError {
-        return this.create(
-            500,
-            "Token generation failed",
-            "TOKEN_GENERATION_FAILED",
-            { message: "Error generating token." }
-        );
+        )
     }
 }

@@ -1,11 +1,11 @@
 import express, {Request, Response} from "express"
-import { Router } from "express";
-import { userRouter } from "./user.routes";
+import { Router } from "express"
+import { userRouter } from "./user.routes"
 
-export const router = Router();
+export const router = Router()
 
-router.use('/users', userRouter);
+router.use('/users', userRouter)
 
 router.get('/', (req: Request, res: Response) => {
-    res.send('Hello World!');
-});
+    res.send('Hello World!')
+})

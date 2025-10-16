@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express"
-import {TokenService} from "../services/token.service";
-import {injectable} from "tsyringe";
-import { TokenError } from "../errors/token.error";
+import {TokenService} from "../services/token.service"
+import {injectable} from "tsyringe"
+import { TokenError } from "../errors/token.error"
 
 @injectable()
 export class AuthMiddleware {

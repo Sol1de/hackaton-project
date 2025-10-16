@@ -1,5 +1,5 @@
-import createError from "http-errors";
-import { BaseError } from "./base.error";
+import createError from "http-errors"
+import { BaseError } from "./base.error"
 
 export class EmailError extends BaseError {
     static invalidEmail(email: string): createError.HttpError {
@@ -8,7 +8,7 @@ export class EmailError extends BaseError {
             "Invalid email format",
             "INVALID_EMAIL",
             { email }
-        );
+        )
     }
 
     static emailAlreadyInUse(email: string): createError.HttpError {
@@ -20,6 +20,6 @@ export class EmailError extends BaseError {
                 email,
                 message: "Try another email."
             }
-        );
+        )
     }
 }

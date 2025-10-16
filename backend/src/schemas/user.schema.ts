@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { z } from 'zod'
 
 export const registerUserSchema = z.object({
     email: z.email({ message: "Invalid email address" }),
@@ -9,7 +9,7 @@ export const registerUserSchema = z.object({
     lastname: z.string(),
     avatar: z.string().optional(),
     description: z.string().optional(),
-});
+})
 
 export type RegisterUserInput = z.infer<typeof registerUserSchema>
 

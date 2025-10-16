@@ -1,4 +1,4 @@
-import createError from "http-errors";
+import createError from "http-errors"
 
 export class BaseError {
     protected static create(
@@ -10,6 +10,6 @@ export class BaseError {
         return createError(statusCode, message, {
             code,
             ...details,
-        });
+        })
     }
 }

@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from "mongoose"
 
 const tokenSchema = new mongoose.Schema({
     token: {
@@ -28,6 +28,6 @@ const tokenSchema = new mongoose.Schema({
     }
 }, {
     timestamps: true
-});
+})
 
-export const Token = mongoose.model('Token', tokenSchema);
+export const Token = mongoose.model('Token', tokenSchema)

@@ -1,5 +1,5 @@
-import createError from "http-errors";
-import { BaseError } from "./base.error";
+import createError from "http-errors"
+import { BaseError } from "./base.error"
 
 export class PasswordError extends BaseError {
     static passwordTooShort(minLength: number): createError.HttpError {
@@ -11,7 +11,7 @@ export class PasswordError extends BaseError {
                 minLength,
                 message: `Password must contain at least ${minLength} caractères.`
             }
-        );
+        )
     }
 
     static invalidPassword(): createError.HttpError {
@@ -19,6 +19,6 @@ export class PasswordError extends BaseError {
             401,
             "Invalid password",
             "INVALID_PASSWORD"
-        );
+        )
     }
 }

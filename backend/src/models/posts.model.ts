@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from "mongoose"
 
 const postsShema = new mongoose.Schema({
 
@@ -20,6 +20,6 @@ const postsShema = new mongoose.Schema({
         maxlength: [1000, 'The title must contain a maximum of 1000 characters.']
     },
     
-}); 
+})
 
-export const Post = mongoose.model('Post', postsShema);
+export const Post = mongoose.model('Post', postsShema)

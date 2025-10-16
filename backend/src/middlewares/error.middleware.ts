@@ -1,6 +1,6 @@
-import { Request, Response, NextFunction } from "express";
-import createError from "http-errors";
-import { z } from "zod";
+import { Request, Response, NextFunction } from "express"
+import createError from "http-errors"
+import { z } from "zod"
 
 export class ErrorMiddleware {
     public static handleError(
@@ -18,8 +18,8 @@ export class ErrorMiddleware {
                     path: err.path.join('.'),
                     message: err.message,
                 })),
-            });
-            return;
+            })
+            return
         }
 
         if (createError.isHttpError(error)) {
@@ -27,34 +27,34 @@ export class ErrorMiddleware {
                 success: false,
                 code: (error as any).code || 'HTTP_ERROR',
                 message: error.message,
-            };
+            }
 
-            const standardProps = ['name', 'message', 'stack', 'status', 'statusCode', 'expose'];
+            const standardProps = ['name', 'message', 'stack', 'status', 'statusCode', 'expose']
             Object.keys(error).forEach(key => {
                 if (!standardProps.includes(key) && key !== 'code') {
                     if (!response.details) {
-                        response.details = {};
+                        response.details = {}
                     }
-                    response.details[key] = (error as any)[key];
+                    response.details[key] = (error as any)[key]
                 }
-            });
+            })
 
-            res.status(error.statusCode).json(response);
-            return;
+            res.status(error.statusCode).json(response)
+            return
         }
 
         if ((error as any).code === 11000) {
-            const field = Object.keys((error as any).keyPattern)[0];
+            const field = Object.keys((error as any).keyPattern)[0]
             res.status(409).json({
                 success: false,
                 code: "DUPLICATE_FIELD",
                 message: `A record with ${field} already exists`,
                 details: { field },
-            });
-            return;
+            })
+            return
         }
 
-        console.error('Error not supported: ', error);
+        console.error('Error not supported: ', error)
         res.status(500).json({
             success: false,
             code: "INTERNAL_SERVER_ERROR",
@@ -62,7 +62,7 @@ export class ErrorMiddleware {
                 ? error.message
                 : "Internal error",
             ...(process.env.NODE_ENV === 'development' && { stack: error.stack }),
-        });
+        })
     }
 
     public static notFound(req: Request, res: Response): void {
@@ -70,6 +70,6 @@ export class ErrorMiddleware {
             success: false,
             code: "ROUTE_NOT_FOUND",
             message: `Route ${req.originalUrl} not found`,
-        });
+        })
     }
 }

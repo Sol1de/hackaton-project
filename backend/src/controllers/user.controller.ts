@@ -2,9 +2,9 @@ import { injectable } from "tsyringe"
 import { Request, Response, NextFunction } from "express"
 import { registerUserSchema, RegisterUserInput, LoginUserInput, loginUserSchema } from "../schemas/user.schema"
 import { UserService } from "../services/user.service"
-import {User} from "../models/users.model";
-import {UserError} from "../errors/user.error";
-import {UtilsService} from "../services/utils.service";
+import {User} from "../models/users.model"
+import {UserError} from "../errors/user.error"
+import {UtilsService} from "../services/utils.service"
 
 @injectable()
 export class UserController {
@@ -16,10 +16,10 @@ export class UserController {
     public async register(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const userData: RegisterUserInput = registerUserSchema.parse(req.body)
-            const existingUser = await User.findOne({ email: userData.email });
+            const existingUser = await User.findOne({ email: userData.email })
 
             if (existingUser) {
-                throw UserError.userAlreadyExists(userData.email);
+                throw UserError.userAlreadyExists(userData.email)
             }
 
             const user = await this.userService.createUser(userData)
@@ -27,7 +27,7 @@ export class UserController {
             res.status(201).json({
                 message: "User created",
                 user: user,
-            });
+            })
         } catch (error) {
             next(error)
         }

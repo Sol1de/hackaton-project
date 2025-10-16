@@ -1,10 +1,10 @@
 import { injectable } from "tsyringe"
 import { Token } from "../models/tokens.model"
 import mongoose from "mongoose"
-import crypto from "crypto";
-import {TokenPayloadInterface} from "../types/token.type";
-import {UtilsService} from "./utils.service";
-import { TokenError } from "../errors/token.error";
+import crypto from "crypto"
+import {TokenPayloadInterface} from "../types/token.type"
+import {UtilsService} from "./utils.service"
+import { TokenError } from "../errors/token.error"
 
 @injectable()
 export class TokenService {
@@ -49,12 +49,12 @@ export class TokenService {
         const token = await Token.findOne({ token: hashedToken })
 
         if (!token) {
-            throw TokenError.invalidToken();
+            throw TokenError.invalidToken()
         }
 
         if (new Date() > token.expiresAt) {
             await Token.deleteOne({ _id: token._id })
-            throw TokenError.expiredToken();
+            throw TokenError.expiredToken()
         }
 
         return token
