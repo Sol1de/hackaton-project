@@ -1,5 +1,5 @@
 <template>
-  <div class="flex h-screen w-full relative">
+  <div>
     <!-- Mobile Menu Button -->
     <button
       @click="toggleMenu"
@@ -16,42 +16,39 @@
       >
         <img src="../assets/image/logo.png" alt="logo" class="w-12 mb-10 mx-auto md:mx-0" />
         <nav class="flex flex-col gap-6 w-full px-4">
+          <!-- Nouveau post : toujours affiché -->
           <button
             class="bg-blue-600 text-white text-sm px-3 py-2 rounded-lg w-full hover:bg-blue-700 transition"
           >
             New Post
           </button>
+
+          <!-- Bouton conditionnel selon la page -->
           <button
+            v-if="currentRoute.path === '/home'"
             @click="$router.push('/profil')"
             class="bg-gray-800 text-white text-sm px-3 py-2 rounded-lg w-full hover:bg-gray-900 transition"
           >
             My Profile
           </button>
+
+          <button
+            v-if="currentRoute.path === '/profil'"
+            @click="$router.push('/home')"
+            class="bg-gray-800 text-white text-sm px-3 py-2 rounded-lg w-full hover:bg-gray-900 transition"
+          >
+            Home
+          </button>
         </nav>
         <div class="hidden md:block absolute top-0 right-0 h-full w-[2px] bg-black"></div>
       </div>
     </transition>
-
-    <!-- Main Content -->
-    <div class="flex-1 flex flex-col items-center bg-gray-50 overflow-hidden">
-      <p class="text-lg my-6 font-semibold">SOCIAL MEDIA</p>
-
-      <!-- Zone scrollable -->
-      <div
-        class="flex flex-col gap-8 w-full max-w-2xl overflow-y-auto px-4 pb-10"
-        style="max-height: calc(100vh - 100px);"
-      >
-        <PostCard />
-        <PostCard />
-        <PostCard />
-      </div>
-    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
-import PostCard from '@/components/PostCard.vue'
+import { ref } from 'vue'
+import { useRoute } from 'vue-router'
 
 const menuOpen = ref(false)
 const isDesktop = ref(window.innerWidth >= 768)
@@ -60,21 +57,12 @@ const toggleMenu = () => {
   menuOpen.value = !menuOpen.value
 }
 
-const handleResize = () => {
-  isDesktop.value = window.innerWidth >= 768
-  if (isDesktop.value) menuOpen.value = false
-}
-
-onMounted(() => {
-  window.addEventListener('resize', handleResize)
-})
-onUnmounted(() => {
-  window.removeEventListener('resize', handleResize)
-})
+// Récupère la route actuelle pour conditionner les boutons
+const currentRoute = useRoute()
 </script>
 
 <style scoped>
-/* Animation d’ouverture du menu mobile */
+/* Animation du menu mobile */
 .slide-enter-active,
 .slide-leave-active {
   transition: transform 0.3s ease;
