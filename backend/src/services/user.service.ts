@@ -5,6 +5,8 @@ import {UtilsService} from "./utils.service"
 import {Token} from "../models/tokens.model";
 import {TokenInterface} from "../types/token.type";
 import {TokenService} from "./token.service";
+import { UserError } from "../errors/user.error";
+import { EmailError } from "../errors/email.error";
 
 @injectable()
 export class UserService {
@@ -22,22 +24,21 @@ export class UserService {
             lastname: userData.lastname,
             avatar: userData.avatar,
             description: userData.description,
-        };
+        }
 
-        return await User.create(user)
+        return await User.create(user);
     }
 
     public async loginUser(userData: LoginUserInput, ipAdress: string, userAgent: string) {
         const user = await User.findOne({ email: userData.email })
 
         if (!user) {
-            throw new Error("User not found")
+            throw UserError.invalidCredentials();
         }
-
         const isPasswordValid = await this.utilsService.comparePassword(userData.password, user.password)
 
         if (!isPasswordValid) {
-            throw new Error("Invalid password")
+            throw UserError.invalidCredentials();
         }
 
         const token = this.tokenService.generateToken(user._id, ipAdress, userAgent)

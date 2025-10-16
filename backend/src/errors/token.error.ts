@@ -1,11 +1,40 @@
 import createError from "http-errors";
+import { BaseError } from "./base.error";
 
-export class TokenError extends Error {
-    static invalidToken(token: string): createError.HttpError {
-        return createError(401, 'Invalid token', {
-            code: 'INVALID_TOKEN',
-            token,
-            count: Object.keys(token).length
-        });
+export class TokenError extends BaseError {
+    static invalidToken(): createError.HttpError {
+        return this.create(
+            401,
+            "Invalid token",
+            "INVALID_TOKEN",
+            { message: "Invalid provided token" }
+        );
+    }
+
+    static expiredToken(): createError.HttpError {
+        return this.create(
+            401,
+            "Token expired",
+            "EXPIRED_TOKEN",
+            { message: "Your session has expired. Please log in again." }
+        );
+    }
+
+    static missingToken(): createError.HttpError {
+        return this.create(
+            403,
+            "Missing token",
+            "MISSING_TOKEN",
+            { message: "No token provided." }
+        );
+    }
+
+    static tokenGenerationFailed(): createError.HttpError {
+        return this.create(
+            500,
+            "Token generation failed",
+            "TOKEN_GENERATION_FAILED",
+            { message: "Error generating token." }
+        );
     }
 }

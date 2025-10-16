@@ -4,6 +4,7 @@ import mongoose from "mongoose"
 import crypto from "crypto";
 import {TokenPayloadInterface} from "../types/token.type";
 import {UtilsService} from "./utils.service";
+import { TokenError } from "../errors/token.error";
 
 @injectable()
 export class TokenService {
@@ -48,12 +49,12 @@ export class TokenService {
         const token = await Token.findOne({ token: hashedToken })
 
         if (!token) {
-            throw new Error("invalid token")
+            throw TokenError.invalidToken();
         }
 
         if (new Date() > token.expiresAt) {
             await Token.deleteOne({ _id: token._id })
-            throw new Error("token expired")
+            throw TokenError.expiredToken();
         }
 
         return token
