@@ -34,6 +34,9 @@ export class UserService {
             throw new Error("Invalid password")
         }
 
-        return user;
+        // Générer le token de connexion
+        const token = this.utilsService.generateToken(user._id.toString())
+
+        return { user, token };
     }
 }

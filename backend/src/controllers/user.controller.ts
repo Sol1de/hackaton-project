@@ -24,11 +24,12 @@ export class UserController {
     public async login(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const userData: LoginUserInput = loginUserSchema.parse(req.body)
-            const user = await this.userService.loginUser(userData)
+            const { user, token } = await this.userService.loginUser(userData)
 
-            res.status(201).json({
+            res.status(200).json({
                 message: "User logged in",
                 user: user,
+                token: token,
             });
         } catch (error: any) {
             throw new Error(`Error during user login: ${error}`)
