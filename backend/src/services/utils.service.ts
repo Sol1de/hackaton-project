@@ -45,14 +45,10 @@ export class UtilsService {
             expiresAt
         }
 
-        // Convertir le payload en base64
         const payloadString = JSON.stringify(payload)
         const payloadBase64 = Buffer.from(payloadString).toString('base64url')
-
-        // Générer la signature HMAC
         const signature = this.generateSignature(payloadBase64)
 
-        // Retourner le token au format: payload.signature
         return `${payloadBase64}.${signature}`
     }
 
@@ -84,7 +80,7 @@ export class UtilsService {
             throw new Error(`verification token error: ${error.message}`)
         }
     }
-    
+
     private generateSignature(data: string): string {
         return crypto
             .createHmac('sha256', this.SECRET_KEY)

@@ -2,6 +2,8 @@ import {LoginUserInput, RegisterUserInput} from "../schemas/user.schema"
 import { User } from "../models/users.model"
 import {injectable} from "tsyringe"
 import {UtilsService} from "./utils.service"
+import {Token} from "../models/tokens.model";
+import {TokenInterface} from "../types/token.type";
 
 @injectable()
 export class UserService {
@@ -34,8 +36,13 @@ export class UserService {
             throw new Error("Invalid password")
         }
 
-        // Générer le token de connexion
-        const token = this.utilsService.generateToken(user._id.toString())
+        const generatedToken = this.utilsService.generateToken(user._id.toString())
+        const token: TokenInterface = {
+            token: generatedToken,
+            userId: user._id,
+            expiresAt: new Date(Date.now() + 3600000)
+        }
+        await Token.create(token)
 
         return { user, token };
     }

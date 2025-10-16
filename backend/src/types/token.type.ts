@@ -1,10 +1,10 @@
 import mongoose from "mongoose";
 
-export interface CommentInterface {
+export interface TokenInterface {
     _id?: mongoose.Types.ObjectId
     userId: mongoose.Types.ObjectId
-    postId: mongoose.Types.ObjectId
-    content: string
+    token: string
+    expiresAt: Date
     createdAt?: Date
     updatedAt?: Date
 }
