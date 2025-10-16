@@ -1,14 +1,14 @@
-import { UserSeeder } from "./user.seeder";
-import { connectDB, disconnectDB } from "../config/db.connection";
-import mongoose from 'mongoose';
-import dotenv from 'dotenv';
+import { UserSeeder } from "./user.seeder"
+import { connectDB, disconnectDB } from "../config/db.connection"
+import mongoose from 'mongoose'
+import dotenv from 'dotenv'
 
-dotenv.config();
+dotenv.config()
 
 async function runSeeders() {
     try {
-        await connectDB();
-        const userSeeder = new UserSeeder();
+        await connectDB()
+        const userSeeder = new UserSeeder()
 
         await userSeeder.createUser({
             email: 'john@exemple.com',
@@ -17,7 +17,7 @@ async function runSeeders() {
             lastname: 'Doe',
             avatar: 'avatar1.jpg',
             description: 'Développeur passionné'
-        });
+        })
 
         await userSeeder.createUser({
             email: 'jane@exemple.com',
@@ -26,14 +26,14 @@ async function runSeeders() {
             lastname: 'Smith',
             avatar: 'avatar2.jpg',
             description: 'Designer créative'
-        });
+        })
 
-        await disconnectDB();
+        await disconnectDB()
 
     } catch (error) {
-        console.error('❌ seeding error:', error);
-        await mongoose.disconnect();
+        console.error('❌ seeding error:', error)
+        await mongoose.disconnect()
     }
 }
 
-runSeeders().then(r => "✅ seeding completed");
+runSeeders().then(r => "✅ seeding completed")
