@@ -6,6 +6,7 @@ import {Token} from "../models/tokens.model"
 import {TokenInterface} from "../types/token.type"
 import {TokenService} from "./token.service"
 import { UserError } from "../errors/user.error"
+import {TokenError} from "../errors/token.error"
 
 @injectable()
 export class UserService {
@@ -28,7 +29,7 @@ export class UserService {
         return await User.create(user)
     }
 
-    public async loginUser(userData: LoginUserInput, ipAdress: string, userAgent: string) {
+    public async login(userData: LoginUserInput, ipAdress: string, userAgent: string) {
         const user = await User.findOne({ email: userData.email })
 
         if (!user) {
@@ -39,6 +40,8 @@ export class UserService {
         if (!isPasswordValid) {
             throw UserError.invalidCredentials()
         }
+
+        await Token.deleteMany({ userId: user._id })
 
         const token = this.tokenService.generateToken(user._id, ipAdress, userAgent)
         const hashedToken = this.utilsService.hashToken(token)
@@ -52,5 +55,28 @@ export class UserService {
         await Token.create(generatedToken)
 
         return { user, token }
+    }
+
+    public async logout(token: string) {
+        try {
+            const decoded = await this.tokenService.verifyToken(token)
+
+            if (!decoded || !decoded.userId) {
+                throw TokenError.invalidToken()
+            }
+
+            const hashedToken = this.utilsService.hashToken(token)
+
+            const deletedToken = await Token.findOneAndDelete({
+                token: hashedToken
+            })
+
+            if (!deletedToken) {
+                throw TokenError.tokenNotFound()
+            }
+
+        } catch (error) {
+            throw UserError.logoutFailed()
+        }
     }
 }
