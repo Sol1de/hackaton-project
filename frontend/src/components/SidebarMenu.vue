@@ -16,14 +16,14 @@
       >
         <img src="../assets/image/logo.png" alt="logo" class="w-12 mb-10 mx-auto md:mx-0" />
         <nav class="flex flex-col gap-6 w-full px-4">
-          <!-- Nouveau post : toujours affiché -->
+          <!-- New Post toujours visible via composable -->
           <button
+            @click="openModal"
             class="bg-blue-600 text-white text-sm px-3 py-2 rounded-lg w-full hover:bg-blue-700 transition"
           >
             New Post
           </button>
 
-          <!-- Bouton conditionnel selon la page -->
           <button
             v-if="currentRoute.path === '/home'"
             @click="$router.push('/profil')"
@@ -43,32 +43,24 @@
         <div class="hidden md:block absolute top-0 right-0 h-full w-[2px] bg-black"></div>
       </div>
     </transition>
+
+    <!-- New Post Modal -->
+    <NewPostModal />
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useRoute } from 'vue-router'
+import NewPostModal from '@/components/NewPostModal.vue'
+import { useNewPostModal } from '@/composables/useNewPostModal'
 
 const menuOpen = ref(false)
 const isDesktop = ref(window.innerWidth >= 768)
-
-const toggleMenu = () => {
-  menuOpen.value = !menuOpen.value
-}
-
-// Récupère la route actuelle pour conditionner les boutons
 const currentRoute = useRoute()
-</script>
 
-<style scoped>
-/* Animation du menu mobile */
-.slide-enter-active,
-.slide-leave-active {
-  transition: transform 0.3s ease;
-}
-.slide-enter-from,
-.slide-leave-to {
-  transform: translateX(-100%);
-}
-</style>
+const toggleMenu = () => menuOpen.value = !menuOpen.value
+
+// Utilisation du composable global pour le modal
+const { openModal } = useNewPostModal()
+</script>
