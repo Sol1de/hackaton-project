@@ -40,15 +40,16 @@ export class UserService {
             throw new Error("Invalid password")
         }
 
-        const generatedToken = this.tokenService.generateToken(user._id, ipAdress, userAgent)
-        const token: TokenInterface = {
-            token: generatedToken,
+        const token = this.tokenService.generateToken(user._id, ipAdress, userAgent)
+        const hashedToken = this.utilsService.hashToken(token)
+        const generatedToken: TokenInterface = {
+            token: hashedToken,
             userId: user._id,
             expiresAt: new Date(Date.now() + 3600000),
             ipAdress: ipAdress,
             userAgent: userAgent,
         }
-        await Token.create(token)
+        await Token.create(generatedToken)
 
         return { user, token };
     }

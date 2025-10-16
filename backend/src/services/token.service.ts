@@ -3,13 +3,14 @@ import { Token } from "../models/tokens.model"
 import mongoose from "mongoose"
 import crypto from "crypto";
 import {TokenPayloadInterface} from "../types/token.type";
+import {UtilsService} from "./utils.service";
 
 @injectable()
 export class TokenService {
     private readonly SECRET_KEY: string
     private readonly TOKEN_EXPIRY_HOURS: number
 
-    constructor() {
+    constructor(private utilsService: UtilsService) {
         if (!process.env.TOKEN_SECRET) {
             throw new Error("TOKEN_SECRET is not defined in environment variables")
         }
@@ -43,7 +44,8 @@ export class TokenService {
     }
 
     public async verifyToken(tokenData: string) {
-        const token = await Token.findOne({ token: tokenData })
+        const hashedToken = this.utilsService.hashToken(tokenData)
+        const token = await Token.findOne({ token: hashedToken })
 
         if (!token) {
             throw new Error("invalid token")
