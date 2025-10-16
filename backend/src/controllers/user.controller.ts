@@ -24,7 +24,9 @@ export class UserController {
     public async login(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const userData: LoginUserInput = loginUserSchema.parse(req.body)
-            const { user, token } = await this.userService.loginUser(userData)
+            const ipAdress = req.ip ||req.socket.remoteAddress as string
+            const userAgent = req.headers['user-agent'] as string
+            const { user, token } = await this.userService.loginUser(userData, ipAdress, userAgent)
 
             res.status(200).json({
                 message: "User logged in",
