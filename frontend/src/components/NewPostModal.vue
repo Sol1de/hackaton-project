@@ -1,7 +1,6 @@
 <template>
   <Dialog v-model:open="isOpen">
     <DialogTrigger asChild>
-      <!-- Pas de trigger ici, contrôle via composable -->
       <span></span>
     </DialogTrigger>
     <DialogContent class="max-w-lg w-full">
@@ -15,7 +14,10 @@
       <div class="mt-4 flex flex-col gap-4">
         <Input v-model="title" placeholder="Post title" />
         <Textarea v-model="content" placeholder="Post content" />
-        <Button @click="submitPost" class="bg-blue-600 text-white w-full">
+        <Button
+          @click="submitPost"
+          class="w-full bg-black text-white hover:bg-gray-900 transition"
+        >
           Submit
         </Button>
       </div>
@@ -40,7 +42,6 @@ const content = ref('')
 const submitPost = () => {
   if (!title.value || !content.value) return
 
-  // Ici tu enverras la requête vers ton backend
   console.log('New Post:', { title: title.value, content: content.value })
 
   title.value = ''

@@ -20,8 +20,8 @@ import PostCard from '@/components/PostCard.vue'
 import { ref } from 'vue'
 
 const user = ref({
-  firstName: 'Jean',
-  lastName: 'Dupont',
+  firstName: 'Romain',
+  lastName: 'Daguet',
   posts: [
     { title: 'Mon premier post', content: 'Voici le contenu de mon premier post !' },
     { title: 'Un autre post', content: 'Encore un post sympa pour tester le profil.' }

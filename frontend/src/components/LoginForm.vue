@@ -24,7 +24,6 @@ function toggleForm() {
 
 <template>
   <div class="flex-1 flex justify-center items-center p-4">
-    <!-- Card responsive: plus compact sur mobile, plus large sur PC -->
     <Card class="w-full max-w-xs sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl">
       <CardHeader class="text-center">
         <CardTitle class="text-xl sm:text-2xl md:text-3xl">
@@ -34,7 +33,6 @@ function toggleForm() {
       <CardContent>
         <form>
           <div class="grid gap-4 sm:gap-6">
-            <!-- Login Form -->
             <div v-if="isLogin" class="grid gap-4 sm:gap-6">
               <div class="grid gap-2 sm:gap-3">
                 <Label for="email">Email</Label>
@@ -53,7 +51,6 @@ function toggleForm() {
               </div>
             </div>
 
-            <!-- Sign Up Form -->
             <div v-else class="grid gap-4 sm:gap-6">
               <div class="grid gap-2 sm:gap-3">
                 <Label for="firstname">Firstname</Label>

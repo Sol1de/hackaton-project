@@ -1,57 +1,62 @@
 <template>
   <div>
-    <!-- Mobile Menu Button -->
     <button
       @click="toggleMenu"
-      class="absolute top-4 left-4 md:hidden bg-gray-800 text-white p-2 rounded-lg z-20"
+      class="absolute top-4 left-4 md:hidden bg-black text-white p-2 rounded-lg z-20"
     >
       ⋮
     </button>
 
-    <!-- Left Sidebar -->
     <transition name="slide">
       <div
         v-if="menuOpen || isDesktop"
-        class="fixed md:static top-0 left-0 h-full md:h-auto w-[70%] md:w-60 bg-gray-50 flex flex-col items-start py-8 z-10 shadow-lg md:shadow-none"
+        class="fixed md:static top-0 left-0 h-full md:h-screen w-[70%] md:w-60 
+               bg-white flex flex-col items-start py-8 z-10 shadow-lg md:shadow-none 
+               border-r-2 border-black"
       >
-        <img src="../assets/image/logo.png" alt="logo" class="w-12 mb-10 mx-auto md:mx-0" />
+        <img
+          src="../assets/image/logo.png"
+          alt="logo"
+          class="w-12 mb-10 mx-auto md:mx-0"
+        />
+
         <nav class="flex flex-col gap-6 w-full px-4">
-          <!-- New Post toujours visible via composable -->
-          <button
+          <Button
             @click="openModal"
-            class="bg-blue-600 text-white text-sm px-3 py-2 rounded-lg w-full hover:bg-blue-700 transition"
+            class="w-full bg-black text-white hover:bg-gray-900"
           >
             New Post
-          </button>
+          </Button>
 
-          <button
+          <Button
             v-if="currentRoute.path === '/home'"
+            variant="secondary"
+            class="w-full bg-black text-white hover:bg-gray-900"
             @click="$router.push('/profil')"
-            class="bg-gray-800 text-white text-sm px-3 py-2 rounded-lg w-full hover:bg-gray-900 transition"
           >
             My Profile
-          </button>
+          </Button>
 
-          <button
+          <Button
             v-if="currentRoute.path === '/profil'"
+            variant="secondary"
+            class="w-full bg-black text-white hover:bg-gray-900"
             @click="$router.push('/home')"
-            class="bg-gray-800 text-white text-sm px-3 py-2 rounded-lg w-full hover:bg-gray-900 transition"
           >
             Home
-          </button>
+          </Button>
         </nav>
-        <div class="hidden md:block absolute top-0 right-0 h-full w-[2px] bg-black"></div>
       </div>
     </transition>
 
-    <!-- New Post Modal -->
     <NewPostModal />
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import { useRoute } from 'vue-router'
+import { Button } from '@/components/ui/button'
 import NewPostModal from '@/components/NewPostModal.vue'
 import { useNewPostModal } from '@/composables/useNewPostModal'
 
@@ -59,8 +64,25 @@ const menuOpen = ref(false)
 const isDesktop = ref(window.innerWidth >= 768)
 const currentRoute = useRoute()
 
-const toggleMenu = () => menuOpen.value = !menuOpen.value
-
-// Utilisation du composable global pour le modal
+const toggleMenu = () => (menuOpen.value = !menuOpen.value)
 const { openModal } = useNewPostModal()
+
+const handleResize = () => {
+  isDesktop.value = window.innerWidth >= 768
+  if (isDesktop.value) menuOpen.value = false
+}
+
+onMounted(() => window.addEventListener('resize', handleResize))
+onUnmounted(() => window.removeEventListener('resize', handleResize))
 </script>
+
+<style scoped>
+.slide-enter-active,
+.slide-leave-active {
+  transition: transform 0.3s ease;
+}
+.slide-enter-from,
+.slide-leave-to {
+  transform: translateX(-100%);
+}
+</style>
