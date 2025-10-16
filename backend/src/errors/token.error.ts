@@ -28,4 +28,20 @@ export class TokenError extends BaseError {
             { message: "No token provided." }
         )
     }
+
+    static tokenNotFound(): createError.HttpError {
+        return this.create(
+            404,
+            'Token invalid or not found',
+            'TOKEN_NOT_FOUND'
+        )
+    }
+
+    static cleanTokensFailed(): createError.HttpError {
+        return this.create(
+            500,
+            'Failed to clean expired tokens',
+            'CLEAN_TOKENS_FAILED'
+        )
+    }
 }

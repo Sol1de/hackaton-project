@@ -12,6 +12,10 @@ userRouter.post('/register', userController.register.bind(userController))
 
 userRouter.post('/login', userController.login.bind(userController))
 
+userRouter.post('/logout',
+    authMiddleware.authenticate.bind(authMiddleware),
+    userController.logout.bind(userController))
+
 userRouter.get('/', (req, res) => {
     res.send('Route get all users')
 })

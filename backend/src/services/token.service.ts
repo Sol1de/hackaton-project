@@ -66,4 +66,17 @@ export class TokenService {
             .update(data)
             .digest('base64url')
     }
+
+    public async cleanExpiredTokens() {
+        try {
+            const result = await Token.deleteMany({
+                expiresAt: { $lt: new Date() }
+            })
+
+            console.log(`${result.deletedCount} deleted expired tokens`)
+        } catch (error) {
+            console.error('Error while cleaning tokens: ', error)
+            throw TokenError.cleanTokensFailed()
+        }
+    }
 }

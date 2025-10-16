@@ -4,14 +4,11 @@ import { registerUserSchema, RegisterUserInput, LoginUserInput, loginUserSchema 
 import { UserService } from "../services/user.service"
 import {User} from "../models/users.model"
 import {UserError} from "../errors/user.error"
-import {UtilsService} from "../services/utils.service"
+import {TokenError} from "../errors/token.error"
 
 @injectable()
 export class UserController {
-    constructor(
-        private userService: UserService,
-        private utilsService: UtilsService
-    ) {}
+    constructor(private userService: UserService) {}
 
     public async register(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
@@ -38,12 +35,32 @@ export class UserController {
             const userData: LoginUserInput = loginUserSchema.parse(req.body)
             const ipAdress = req.ip || req.socket.remoteAddress as string
             const userAgent = req.headers['user-agent'] as string
-            const { user, token } = await this.userService.loginUser(userData, ipAdress, userAgent)
+            const { user, token } = await this.userService.login(userData, ipAdress, userAgent)
 
             res.status(200).json({
                 message: "User logged in",
                 user: user,
                 token: token,
+            })
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    public async logout(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            const authHeader = req.headers['authorization']
+
+            if (!authHeader || !authHeader.startsWith('Bearer ')) {
+                throw TokenError.invalidToken()
+            }
+
+            const token = authHeader.split(' ')[1]
+
+            await this.userService.logout(token)
+
+            res.status(200).json({
+                message: "User logged out successfully",
             })
         } catch (error) {
             next(error)

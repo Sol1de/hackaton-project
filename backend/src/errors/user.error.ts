@@ -36,4 +36,12 @@ export class UserError extends BaseError {
             { errors }
         )
     }
+
+    static logoutFailed(): UserError {
+        return this.create(
+            500,
+            'Logout failed',
+            'LOGOUT_FAILED'
+        )
+    }
 }

@@ -7,7 +7,7 @@ import { TokenError } from "../errors/token.error"
 export class AuthMiddleware {
     constructor(private tokenService: TokenService) {}
 
-    public async authMiddleware(req: Request, res: Response, next: NextFunction) {
+    public async authenticate(req: Request, res: Response, next: NextFunction) {
         try {
             let token = req.headers['authorization']
 
