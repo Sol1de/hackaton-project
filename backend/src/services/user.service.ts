@@ -7,6 +7,7 @@ import { TokenInterface } from "../types/token.type"
 import { TokenService } from "./token.service"
 import { UserError } from "../errors/user.error"
 import { TokenError } from "../errors/token.error"
+import {UpdateUserInterface, UserInterface} from "../types/user.type";
 
 @injectable()
 export class UserService {
@@ -93,5 +94,35 @@ export class UserService {
         }
 
         return user
+    }
+
+    public async updateUser(userData: UpdateUserInterface) {
+        this.utilsService.validateObjectId(userData._id)
+
+        if (!userData.email && !userData.firstname && !userData.lastname && !userData.avatar && !userData.description) {
+            throw UserError.invalidUserData({
+                message: "At least one field must be provided"
+            })
+        }
+
+        const user = await User.findById(userData._id)
+
+        if (!user) {
+            throw UserError.userNotFound(userData._id)
+        }
+
+        if (user._id.toString() !== userData.userId.toString()) {
+            throw UserError.unauthorizedAccess()
+        }
+
+        const updateData: Partial<UserInterface> = {
+            email: userData.email,
+            firstname: userData.firstname,
+            lastname: userData.lastname,
+            avatar: userData.avatar,
+            description: userData.description
+        }
+
+        return User.findByIdAndUpdate(userData._id, updateData, { new: true })
     }
 }

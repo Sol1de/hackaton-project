@@ -1,14 +1,18 @@
 import { injectable } from "tsyringe"
 import { Request, Response, NextFunction } from "express"
-import { registerUserSchema, RegisterUserInput, LoginUserInput, loginUserSchema } from "../schemas/user.schema"
+import { registerUserSchema, RegisterUserInput, LoginUserInput, loginUserSchema, updateUserSchema } from "../schemas/user.schema"
 import { UserService } from "../services/user.service"
+import { TokenService } from "../services/token.service"
 import {User} from "../models/users.model"
 import {UserError} from "../errors/user.error"
 import {TokenError} from "../errors/token.error"
 
 @injectable()
 export class UserController {
-    constructor(private userService: UserService) {}
+    constructor(
+        private userService: UserService,
+        private tokenService: TokenService
+    ) {}
 
     public async register(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
@@ -92,9 +96,31 @@ export class UserController {
         }
     }
 
-    public async updateUser(req: Request, res: Response, next: NextFunction) {}
+    public async updateUser(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { userId } = req.params
+            const { email, firstname, lastname, avatar, description } = updateUserSchema.parse(req.body)
+            const token = await this.tokenService.verifyToken(this.tokenService.getToken(req))
+            const updatedUser = await this.userService.updateUser({
+                _id: userId,
+                email,
+                firstname,
+                lastname,
+                avatar,
+                description,
+                userId: token.userId
+            })
+
+            res.status(200).json({
+                message: "User updated",
+                user: updatedUser,
+            })
+        } catch (error) {
+            next(error)
+        }
+    }
 
     public async deleteUser(req: Request, res: Response, next: NextFunction) {}
 
-    //TODO faire un updateUser, deleteUser & les routes qui vont avec
+    //TODO faire deleteUser & les routes qui vont avec
 }

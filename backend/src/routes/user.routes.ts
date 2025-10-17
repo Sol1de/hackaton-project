@@ -21,9 +21,7 @@ userRouter.get('/', userController.getUsers.bind(userController))
 userRouter.get('/:userId', userController.getUser.bind(userController))
 
 userRouter.put
-('/:userId', (req, res) => {
-    res.send('Route update user')
-})
+('/:userId', userController.updateUser.bind(userController))
 
 userRouter.delete('/:userId', (req, res) => {
     res.send('Route delete user')
