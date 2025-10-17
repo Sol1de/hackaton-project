@@ -44,4 +44,13 @@ export class UserError extends BaseError {
             'LOGOUT_FAILED'
         )
     }
+
+    static unauthorizedAccess(): createError.HttpError {
+        return this.create(
+            403,
+            "Unauthorized access",
+            "UNAUTHORIZED_ACCESS",
+            { message: "You are not authorized to modify this user" }
+        )
+    }
 }

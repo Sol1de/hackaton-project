@@ -11,5 +11,7 @@ router.use('/posts', postRouter)
 router.use('/comments', commentRouter)
 
 router.get('/', (req: Request, res: Response) => {
-    res.send('Hello World!')
+    res.send({
+        message: 'Hello World !'
+    })
 })

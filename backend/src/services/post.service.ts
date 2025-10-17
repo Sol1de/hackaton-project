@@ -1,21 +1,21 @@
 import { Post } from "../models/posts.model"
 import { PostInterface, CreatePostInterface, UpdatePostInterface, DeletePostInterface } from "../types/post.type"
-import mongoose from "mongoose"
 import { PostError } from "../errors/post.error"
+import { UtilsService } from "./utils.service";
+import { injectable } from "tsyringe";
 
+@injectable()
 export class PostService {
-    private validateObjectId(id: string): void {
-        if (!mongoose.Types.ObjectId.isValid(id)) {
-            throw PostError.invalidPostId(id)
-        }
-    }
+    constructor(
+        private utilsService: UtilsService,
+    ) {}
 
     async getPosts(){
         return Post.find().sort({createdAt: -1}).populate('userId', 'firstname lastname email avatar')
     }
 
     async getPost(postId: string){
-        this.validateObjectId(postId)
+        this.utilsService.validateObjectId(postId)
         const post = await Post.findOne({ _id: postId }).populate('userId', 'firstname lastname email avatar')
 
         if (!post) {
@@ -47,7 +47,7 @@ export class PostService {
     }
 
     async updatePost(postData: UpdatePostInterface){
-        this.validateObjectId(postData._id)
+        this.utilsService.validateObjectId(postData._id)
 
         if (!postData.content && !postData.title) {
             throw PostError.invalidPostData({
@@ -74,7 +74,7 @@ export class PostService {
     }
 
     async deletePost(postData: DeletePostInterface){
-        this.validateObjectId(postData._id)
+        this.utilsService.validateObjectId(postData._id)
 
         const post = await Post.findById(postData._id)
 
