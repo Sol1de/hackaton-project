@@ -75,6 +75,7 @@ function toggleForm() {
               </div>
             </div>
 
+            
               <Button type="submit" class="w-full py-2 sm:py-3 text-sm sm:text-lg">Sign Up</Button>
               <div class="text-center text-xs sm:text-sm">
                 Already have an account?
