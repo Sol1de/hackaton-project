@@ -66,4 +66,6 @@ export class UserController {
             next(error)
         }
     }
+
+    //TODO faire un getUsers, getUser, updateUser, deleteUser & les routes qui vont avec
 }
