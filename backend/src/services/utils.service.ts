@@ -1,9 +1,14 @@
 import bcrypt from "bcrypt"
 import crypto from "crypto"
+import mongoose from "mongoose"
+import { ObjectIdError } from "../errors/objectId.error"
 
 export class UtilsService {
-
-    constructor() {}
+    public validateObjectId(id: string): void {
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            throw ObjectIdError.invalidObjectId(id)
+        }
+    }
 
     public hashPassword(plainPassword: string) {
         return bcrypt.hash(plainPassword, 10)

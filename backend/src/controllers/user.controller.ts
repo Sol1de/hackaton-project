@@ -1,40 +1,140 @@
 import { injectable } from "tsyringe"
 import { Request, Response, NextFunction } from "express"
-import { registerUserSchema, RegisterUserInput, LoginUserInput, loginUserSchema } from "../schemas/user.schema"
+import { registerUserSchema, RegisterUserInput, LoginUserInput, loginUserSchema, updateUserSchema } from "../schemas/user.schema"
 import { UserService } from "../services/user.service"
+import { TokenService } from "../services/token.service"
+import {User} from "../models/users.model"
+import {UserError} from "../errors/user.error"
+import {TokenError} from "../errors/token.error"
 
 @injectable()
 export class UserController {
-    constructor(private userService: UserService) {}
+    constructor(
+        private userService: UserService,
+        private tokenService: TokenService
+    ) {}
 
     public async register(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const userData: RegisterUserInput = registerUserSchema.parse(req.body)
+            const existingUser = await User.findOne({ email: userData.email })
+
+            if (existingUser) {
+                throw UserError.userAlreadyExists(userData.email)
+            }
+
             const user = await this.userService.createUser(userData)
 
             res.status(201).json({
                 message: "User created",
                 user: user,
-            });
-        } catch (error: any) {
-            throw new Error(`Error during user registration: ${error}`)
+            })
+        } catch (error) {
+            next(error)
         }
     }
 
     public async login(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const userData: LoginUserInput = loginUserSchema.parse(req.body)
-            const ipAdress = req.ip ||req.socket.remoteAddress as string
+            const ipAdress = req.ip || req.socket.remoteAddress as string
             const userAgent = req.headers['user-agent'] as string
-            const { user, token } = await this.userService.loginUser(userData, ipAdress, userAgent)
+            const { user, token } = await this.userService.login(userData, ipAdress, userAgent)
 
             res.status(200).json({
                 message: "User logged in",
                 user: user,
                 token: token,
-            });
-        } catch (error: any) {
-            throw new Error(`Error during user login: ${error}`)
+            })
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    public async logout(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            const authHeader = req.headers['authorization']
+
+            if (!authHeader || !authHeader.startsWith('Bearer ')) {
+                throw TokenError.invalidToken()
+            }
+
+            const token = authHeader.split(' ')[1]
+
+            await this.userService.logout(token)
+
+            res.status(200).json({
+                message: "User logged out successfully",
+            })
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    public async getUsers(req: Request, res: Response, next: NextFunction) {
+        try {
+            const users = await this.userService.getUsers()
+
+            res.status(200).json({
+                users: users,
+            })
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    public async getUser(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { userId } = req.params
+            const user = await this.userService.getUser(userId)
+
+            res.status(200).json({
+                user: user,
+            })
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    public async updateUser(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { userId } = req.params
+            const { email, firstname, lastname, avatar, description } = updateUserSchema.parse(req.body)
+            const token = await this.tokenService.verifyToken(this.tokenService.getToken(req))
+            const updatedUser = await this.userService.updateUser({
+                _id: userId,
+                email,
+                firstname,
+                lastname,
+                avatar,
+                description,
+                userId: token.userId
+            })
+
+            res.status(200).json({
+                message: "User updated",
+                user: updatedUser,
+            })
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    public async deleteUser(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { userId } = req.params
+            const token = await this.tokenService.verifyToken(this.tokenService.getToken(req))
+            const deletedUser = await this.userService.deleteUser({ 
+                _id: userId,
+                userId: token.userId
+            })
+
+            res.status(200).json({
+                message: "User deleted",
+                user: deletedUser,
+            })
+        } catch (error) {
+            next(error)
         }
     }
 }

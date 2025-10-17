@@ -1,9 +1,11 @@
 import { injectable } from "tsyringe"
 import { Token } from "../models/tokens.model"
 import mongoose from "mongoose"
-import crypto from "crypto";
-import {TokenPayloadInterface} from "../types/token.type";
-import {UtilsService} from "./utils.service";
+import crypto from "crypto"
+import { TokenPayloadInterface } from "../types/token.type"
+import { UtilsService } from "./utils.service"
+import { TokenError } from "../errors/token.error"
+import { Request } from "express"
 
 @injectable()
 export class TokenService {
@@ -48,12 +50,12 @@ export class TokenService {
         const token = await Token.findOne({ token: hashedToken })
 
         if (!token) {
-            throw new Error("invalid token")
+            throw TokenError.invalidToken()
         }
 
         if (new Date() > token.expiresAt) {
             await Token.deleteOne({ _id: token._id })
-            throw new Error("token expired")
+            throw TokenError.expiredToken()
         }
 
         return token
@@ -64,5 +66,32 @@ export class TokenService {
             .createHmac('sha256', this.SECRET_KEY)
             .update(data)
             .digest('base64url')
+    }
+
+    public async cleanExpiredTokens() {
+        try {
+            const result = await Token.deleteMany({
+                expiresAt: { $lt: new Date() }
+            })
+
+            console.log(`${result.deletedCount} deleted expired tokens`)
+        } catch (error) {
+            console.error('Error while cleaning tokens: ', error)
+            throw TokenError.cleanTokensFailed()
+        }
+    }
+
+    public getToken(req: Request): string {
+        let token = req.headers['authorization']
+
+        if (!token) {
+            throw TokenError.missingToken()
+        }
+
+        if (token.startsWith('Bearer ')) {
+            token = token.substring(7)
+        }
+
+        return token
     }
 }

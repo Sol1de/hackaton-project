@@ -1,34 +1,30 @@
-import { Router } from 'express';
-import { container } from 'tsyringe';
-import { UserController } from '../controllers/user.controller';
-import { AuthMiddleware } from '../middlewares/auth.middleware';
+import { Router } from 'express'
+import { container } from 'tsyringe'
+import { UserController } from '../controllers/user.controller'
+import { AuthMiddleware } from '../middlewares/auth.middleware'
 
-const userController = container.resolve(UserController);
-const authMiddleware = container.resolve(AuthMiddleware);
+const userController = container.resolve(UserController)
+const authMiddleware = container.resolve(AuthMiddleware)
 
-export const userRouter = Router();
+export const userRouter = Router()
+
+userRouter.get('/', userController.getUsers.bind(userController))
+
+userRouter.get('/:userId', userController.getUser.bind(userController))
 
 userRouter.post('/register', userController.register.bind(userController))
 
 userRouter.post('/login', userController.login.bind(userController))
 
-userRouter.get('/', (req, res) => {
-    res.send('Route get all users');
-})
+userRouter.post('/logout',
+    authMiddleware.authenticate.bind(authMiddleware),
+    userController.logout.bind(userController))
 
-userRouter.get('/:id', (req, res) => {
-    res.send('Route get user by id');
-})
+userRouter.put
+('/:userId',
+    authMiddleware.authenticate.bind(authMiddleware),
+    userController.updateUser.bind(userController))
 
-userRouter.post('/', (req, res) => {
-    res.send('Route create user');
-})
-
-userRouter.post
-('/:id', (req, res) => {
-    res.send('Route update user');
-})
-
-userRouter.post('/:id', (req, res) => {
-    res.send('Route delete user');
-})
+userRouter.delete('/:userId',
+    authMiddleware.authenticate.bind(authMiddleware),
+    userController.deleteUser.bind(userController))
