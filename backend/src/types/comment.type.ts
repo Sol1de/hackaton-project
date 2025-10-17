@@ -11,14 +11,14 @@ export interface CommentInterface {
 
 export interface CreateCommentInterface {
     content: string
-    postId: mongoose.Types.ObjectId
+    postId: string
     userId: mongoose.Types.ObjectId
 }
 
 export interface UpdateCommentInterface{
     _id: string
     content?: string
-    userId?: mongoose.Types.ObjectId
+    userId: mongoose.Types.ObjectId
 }
 
 export interface DeleteCommentInterface {

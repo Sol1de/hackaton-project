@@ -1,23 +1,21 @@
 import { CommentInterface, CreateCommentInterface, UpdateCommentInterface, DeleteCommentInterface } from '../types/comment.type'
 import { Comment } from '../models/comments.model'
-import mongoose from 'mongoose'
 import { CommentError } from '../errors/comment.error';
+import { UtilsService } from './utils.service';
+import { injectable } from 'tsyringe';
 
-
-
+@injectable()
 export class CommentService {
-    private validateObjectId(id: string): void {
-        if (!mongoose.Types.ObjectId.isValid(id)) {
-            throw CommentError.invalidCommentId(id);
-        }
-    }
+    constructor(
+        private utilsService: UtilsService,
+    ) {}
 
     async getComments(){
         return Comment.find().sort({createdAt: -1}).populate('userId', 'firstname lastname email avatar');
     }
 
     async getComment(commentId: string){
-        this.validateObjectId(commentId);
+        this.utilsService.validateObjectId(commentId);
         const comment = await Comment.findOne({ _id : commentId}).populate('userId', 'firstname lastname email avatar');
         if(!comment){
             throw CommentError.commentNotFound(commentId);
@@ -46,7 +44,7 @@ export class CommentService {
     }
 
     async updateComment(commentData: UpdateCommentInterface){
-        this.validateObjectId(commentData._id);
+        this.utilsService.validateObjectId(commentData._id);
 
         if(!commentData.content){
             throw CommentError.invalidCommentData({
@@ -58,7 +56,7 @@ export class CommentService {
         if(!comment){
             throw CommentError.commentNotFound(commentData._id)
         }
-        if(comment.userId.toString() !== commentData.userId?.toString()){
+        if(comment.userId.toString() !== commentData.userId.toString()){
             throw CommentError.unauthorizedCommentAccess();
         }
 
@@ -70,7 +68,7 @@ export class CommentService {
     }
 
     async deletComment(commentData: DeleteCommentInterface){
-        this.validateObjectId(commentData._id)
+        this.utilsService.validateObjectId(commentData._id)
 
         const comment = await Comment.findById(commentData._id);
         if(!comment){

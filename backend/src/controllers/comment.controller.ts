@@ -2,6 +2,7 @@ import { injectable } from "tsyringe";
 import { Request, Response, NextFunction } from "express";
 import { CommentService } from "../services/comment.service";
 import { TokenService } from "../services/token.service";
+import { createCommentSchema, updateCommentSchema, CreateCommentInput, UpdateCommentInput } from "../schemas/comment.schema";
 
 @injectable()
 export class CommentController{
@@ -14,7 +15,7 @@ export class CommentController{
         try {
             const comments = await this.commentService.getComments();
 
-            res.json({
+            res.status(200).json({
                 comments: comments,
             })
         } catch (error) {
@@ -26,8 +27,8 @@ export class CommentController{
         try {
             const { commentId } = req.params
             const comment = await this.commentService.getComment(commentId);
-            
-            res.json({
+
+            res.status(200).json({
                 comment: comment,
             })
         } catch (error) {
@@ -37,11 +38,11 @@ export class CommentController{
 
     public async createComment(req: Request, res: Response, next: NextFunction){
         try {
-            const { content, postId } = req.body
+            const commentData: CreateCommentInput = createCommentSchema.parse(req.body)
             const token = await this.tokenService.verifyToken(this.tokenService.getToken(req))
             const comment = await this.commentService.createComment({
-                content,
-                postId,
+                content: commentData.content,
+                postId: commentData.postId,
                 userId: token.userId
             })
 
@@ -56,16 +57,16 @@ export class CommentController{
     public async updateComment(req: Request, res: Response, next: NextFunction){
         try {
             const { commentId } = req.params
-            const { content } = req.body
+            const commentData: UpdateCommentInput = updateCommentSchema.parse(req.body)
             const token = await this.tokenService.verifyToken(this.tokenService.getToken(req))
             const comment = await this.commentService.updateComment({
                 _id: commentId,
-                content,
+                content: commentData.content,
                 userId: token.userId
             })
 
-            res.json({
-                message: "Comment updated successfully",
+            res.status(200).json({
+                message: "Comment updated",
                 comment: comment,
             })
         } catch (error) {
@@ -77,14 +78,14 @@ export class CommentController{
         try {
             const { commentId } = req.params
             const token = await this.tokenService.verifyToken(this.tokenService.getToken(req))
-            const deleteComment = await this.commentService.deletComment({
+            const deletedComment = await this.commentService.deletComment({
                 _id: commentId,
                 userId: token.userId
             })
 
-            res.json({
-                message: "Comment deleted successfully",
-                comment: deleteComment,
+            res.status(200).json({
+                message: "Comment deleted",
+                comment: deletedComment,
             })
         } catch (error) {
             next(error);

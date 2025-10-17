@@ -61,7 +61,7 @@ export class CommentError extends BaseError {
             403,
             "Unauthorized comment access",
             "UNAUTHORIZED_COMMENT_ACCESS",
-            { message: "You do not have permission to access this comment." }
+            { message: "You are not authorized to perform this action on this comment." }
         )
     }
 }
