@@ -5,10 +5,21 @@ export const registerUserSchema = z.object({
     password: z
         .string()
         .min(8, { message: "Password must be at least 8 characters long" }),
-    firstname: z.string(),
-    lastname: z.string(),
-    avatar: z.string().optional(),
-    description: z.string().optional(),
+    firstname: z
+        .string()
+        .min(1, { message: "First name is required" })
+        .max(50, { message: "First name must be at most 50 characters long" }),
+    lastname: z
+        .string()
+        .min(1, { message: "Last name is required" })
+        .max(50, { message: "Last name must be at most 50 characters long" }),
+    avatar: z
+        .url({ message: "Avatar must be a valid URL" })
+        .optional(),
+    description: z
+        .string()
+        .max(500, { message: "Description must be at most 500 characters long" })
+        .optional(),
 })
 
 export type RegisterUserInput = z.infer<typeof registerUserSchema>
@@ -24,10 +35,25 @@ export type LoginUserInput = z.infer<typeof loginUserSchema>
 
 export const updateUserSchema = z.object({
     email: z.email({ message: "Invalid email address" }).optional(),
-    firstname: z.string().optional(),
-    lastname: z.string().optional(),
-    avatar: z.string().optional(),
-    description: z.string().optional(),
+    firstname: z
+        .string()
+        .min(1, { message: "First name cannot be empty" })
+        .max(50, { message: "First name must be at most 50 characters long" })
+        .optional(),
+    lastname: z
+        .string()
+        .min(1, { message: "Last name cannot be empty" })
+        .max(50, { message: "Last name must be at most 50 characters long" })
+        .optional(),
+    avatar: z
+        .url({ message: "Avatar must be a valid URL" })
+        .optional(),
+    description: z
+        .string()
+        .max(500, { message: "Description must be at most 500 characters long" })
+        .optional(),
+}).refine((data) => data.email !== undefined || data.firstname !== undefined || data.lastname !== undefined || data.avatar !== undefined || data.description !== undefined, {
+    message: "At least one field (email, firstname, lastname, avatar, or description) must be provided",
 })
 
 export type UpdateUserInput = z.infer<typeof updateUserSchema>

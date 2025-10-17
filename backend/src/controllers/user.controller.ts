@@ -1,6 +1,13 @@
 import { injectable } from "tsyringe"
 import { Request, Response, NextFunction } from "express"
-import { registerUserSchema, RegisterUserInput, LoginUserInput, loginUserSchema, updateUserSchema } from "../schemas/user.schema"
+import {
+    registerUserSchema,
+    RegisterUserInput,
+    LoginUserInput,
+    loginUserSchema,
+    updateUserSchema,
+    UpdateUserInput
+} from "../schemas/user.schema"
 import { UserService } from "../services/user.service"
 import { TokenService } from "../services/token.service"
 import {User} from "../models/users.model"
@@ -99,15 +106,15 @@ export class UserController {
     public async updateUser(req: Request, res: Response, next: NextFunction) {
         try {
             const { userId } = req.params
-            const { email, firstname, lastname, avatar, description } = updateUserSchema.parse(req.body)
+            const userData: UpdateUserInput = updateUserSchema.parse(req.body)
             const token = await this.tokenService.verifyToken(this.tokenService.getToken(req))
             const updatedUser = await this.userService.updateUser({
                 _id: userId,
-                email,
-                firstname,
-                lastname,
-                avatar,
-                description,
+                email: userData.email,
+                firstname: userData.firstname,
+                lastname: userData.lastname,
+                avatar: userData.avatar,
+                description: userData.description,
                 userId: token.userId
             })
 
