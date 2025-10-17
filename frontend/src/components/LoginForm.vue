@@ -45,7 +45,7 @@ function toggleForm() {
               <Button type="submit" class="w-full py-2 sm:py-3 text-sm sm:text-lg">Login</Button>
               <div class="text-center text-xs sm:text-sm">
                 Don't have an account?
-                <Button variant="outline" class="bg-black text-white py-1 px-2" @click.prevent="toggleForm">
+                <Button class="py-1 px-2" @click.prevent="toggleForm">
                   Sign Up
                 </Button>
               </div>
@@ -71,7 +71,7 @@ function toggleForm() {
               <Button type="submit" class="w-full py-2 sm:py-3 text-sm sm:text-lg">Sign Up</Button>
               <div class="text-center text-xs sm:text-sm">
                 Already have an account?
-                <Button variant="outline" class="bg-black text-white py-1 px-2" @click.prevent="toggleForm">
+                <Button class="py-1 px-2" @click.prevent="toggleForm">
                   Login
                 </Button>
               </div>

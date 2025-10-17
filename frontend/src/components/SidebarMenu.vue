@@ -17,7 +17,7 @@
         <img
           src="../assets/image/logo.png"
           alt="logo"
-          class="w-12 mb-10 mx-auto md:mx-0"
+          class="w-12 mb-10 md:ml-[15px]"
         />
 
         <nav class="flex flex-col gap-6 w-full px-4">

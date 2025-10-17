@@ -7,7 +7,7 @@
       <DialogHeader>
         <DialogTitle>Create a New Post</DialogTitle>
         <DialogDescription>
-          Write your post and submit it.
+          Share your opinion!
         </DialogDescription>
       </DialogHeader>
 

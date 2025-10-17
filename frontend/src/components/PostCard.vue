@@ -50,10 +50,53 @@
       </div>
     </CardContent>
   </Card>
+
+  <!-- <Card class="max-w-2xl w-full mx-auto mt-10 p-6 shadow-md">
+    <CardHeader>
+      <CardTitle class="text-2xl font-bold">
+        {{ title }}
+      </CardTitle>
+      <CardDescription class="whitespace-pre-wrap break-words">
+        {{ description }}
+      </CardDescription>
+    </CardHeader>
+
+    <CardContent class="mt-6 space-y-4">
+      <h3 class="font-semibold text-lg">Commentaires :</h3>
+
+      <div
+        v-for="(comment, index) in comments"
+        :key="index"
+        class="border p-3 rounded-lg bg-gray-50"
+      >
+        <p class="font-semibold text-sm text-gray-700 mb-1">
+          {{ comment.author }}
+        </p>
+        <p class="break-words whitespace-pre-wrap">
+          {{ comment.text }}
+        </p>
+      </div>
+
+      <div class="mt-4">
+        <Textarea
+          v-model="newComment"
+          placeholder="Écrire un commentaire..."
+          class="mb-3"
+        />
+        <Button
+          @click="addComment"
+          class="w-full bg-black text-white hover:bg-gray-900 transition"
+        >
+          Ajouter un commentaire
+        </Button>
+      </div>
+    </CardContent>
+  </Card> -->
+
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted  } from 'vue'
 import {
   Card,
   CardHeader,
@@ -63,6 +106,15 @@ import {
 } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
+
+// const title = ref("")
+// const description = ref("")
+
+// const response = await fetch("")
+//   const data = await response.json()
+
+//   title.value = data.title
+//   description.value = data.description
 
 const comments = ref<{ author: string; text: string }[]>([])
 const newComment = ref('')
