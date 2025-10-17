@@ -8,6 +8,10 @@ const authMiddleware = container.resolve(AuthMiddleware)
 
 export const userRouter = Router()
 
+userRouter.get('/', userController.getUsers.bind(userController))
+
+userRouter.get('/:userId', userController.getUser.bind(userController))
+
 userRouter.post('/register', userController.register.bind(userController))
 
 userRouter.post('/login', userController.login.bind(userController))
@@ -15,10 +19,6 @@ userRouter.post('/login', userController.login.bind(userController))
 userRouter.post('/logout',
     authMiddleware.authenticate.bind(authMiddleware),
     userController.logout.bind(userController))
-
-userRouter.get('/', userController.getUsers.bind(userController))
-
-userRouter.get('/:userId', userController.getUser.bind(userController))
 
 userRouter.put
 ('/:userId',
