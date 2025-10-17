@@ -20,6 +20,46 @@ const isLogin = ref(true)
 function toggleForm() {
   isLogin.value = !isLogin.value
 }
+
+// Champs du formulaire
+const email = ref('')
+const password = ref('')
+const firstname = ref('')
+const lastname = ref('')
+const errorMessage = ref('')
+
+// Fonction d’envoi
+const handleSubmit = async () => {
+  errorMessage.value = ''
+  const endpoint = isLogin.value ? '/api/login' : '/api/register'
+
+  try {
+    const response = await fetch(`http://localhost:5000${endpoint}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email: email.value,
+        password: password.value,
+        firstname: firstname.value, 
+        lastname: lastname.value,
+      }),
+    })
+
+    const data = await response.json()
+
+    if (!response.ok) throw new Error(data.message || 'Erreur de connexion')
+
+    if (isLogin.value) {
+      localStorage.setItem('token', data.token)
+      alert('Connexion réussie !')
+    } else {
+      alert('Compte créé avec succès !')
+      toggleForm()
+    }
+  } catch (err: any) {
+    errorMessage.value = err.message
+  }
+}
 </script>
 
 <template>
@@ -31,8 +71,9 @@ function toggleForm() {
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <form>
+          <form @submit.prevent="handleSubmit">
           <div class="grid gap-4 sm:gap-6">
+
             <div v-if="isLogin" class="grid gap-4 sm:gap-6">
               <div class="grid gap-2 sm:gap-3">
                 <Label for="email">Email</Label>
@@ -75,7 +116,7 @@ function toggleForm() {
               </div>
             </div>
 
-            
+
               <Button type="submit" class="w-full py-2 sm:py-3 text-sm sm:text-lg">Sign Up</Button>
               <div class="text-center text-xs sm:text-sm">
                 Already have an account?
@@ -86,6 +127,7 @@ function toggleForm() {
             </div>
 
           </div>
+          <p v-if="errorMessage" class="text-red-500 mt-2 text-center">{{ errorMessage }}</p>
         </form>
       </CardContent>
     </Card>
