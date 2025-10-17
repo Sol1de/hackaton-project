@@ -2,14 +2,21 @@
   <div class="flex h-screen w-full relative">
     <SidebarMenu />
 
-    <div class="flex-1 flex flex-col items-center bg-gray-50 overflow-auto p-6">
-      <h1 class="text-3xl font-bold">{{ user.firstName }} {{ user.lastName }}</h1>
+    <div class="flex-1 flex flex-col items-center bg-gray-50 overflow-hidden">
+      <p class="text-lg my-6 font-semibold">{{ user.firstName }} {{ user.lastName }}</p>
+      
+      
+      <div
+        class="flex flex-col gap-8 w-full max-w-2xl overflow-y-auto px-4 pb-10"
+        style="max-height: calc(100vh - 100px);"
+      >
       <PostCard
         v-for="(post, index) in user.posts"
         :key="index"
         :title="post.title"
         :content="post.content"
       />
+      </div>
     </div>
   </div>
 </template>
