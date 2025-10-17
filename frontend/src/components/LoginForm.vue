@@ -52,6 +52,8 @@ function toggleForm() {
             </div>
 
             <div v-else class="grid gap-4 sm:gap-6">
+
+            <div class="grid grid-cols-2 gap-3">
               <div class="grid gap-2 sm:gap-3">
                 <Label for="firstname">Firstname</Label>
                 <Input id="firstname" type="text" required />
@@ -60,6 +62,9 @@ function toggleForm() {
                 <Label for="lastname">Lastname</Label>
                 <Input id="lastname" type="text" required />
               </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
               <div class="grid gap-2 sm:gap-3">
                 <Label for="email-signup">Email</Label>
                 <Input id="email-signup" type="email" required />
@@ -68,6 +73,8 @@ function toggleForm() {
                 <Label for="password-signup">Password</Label>
                 <Input id="password-signup" type="password" required />
               </div>
+            </div>
+
               <Button type="submit" class="w-full py-2 sm:py-3 text-sm sm:text-lg">Sign Up</Button>
               <div class="text-center text-xs sm:text-sm">
                 Already have an account?
