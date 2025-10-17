@@ -2,6 +2,7 @@ import { injectable } from "tsyringe"
 import { Request, Response, NextFunction } from "express"
 import { PostService } from "../services/post.service"
 import { TokenService } from "../services/token.service"
+import { createPostSchema, updatePostSchema, CreatePostInput, UpdatePostInput } from "../schemas/post.schema"
 
 @injectable()
 export class PostController {
@@ -37,11 +38,11 @@ export class PostController {
 
     public async createPost(req: Request, res: Response, next: NextFunction) {
         try {
-            const { content, title } = req.body
+            const postData: CreatePostInput = createPostSchema.parse(req.body)
             const token = await this.tokenService.verifyToken(this.tokenService.getToken(req))
             const post = await this.postService.createPost({
-                content,
-                title,
+                content: postData.content,
+                title: postData.title,
                 userId: token.userId
             })
 
@@ -56,18 +57,18 @@ export class PostController {
     public async updatePost(req: Request, res: Response, next: NextFunction) {
         try {
             const { postId } = req.params
-            const { content, title } = req.body
+            const postData: UpdatePostInput = updatePostSchema.parse(req.body)
             const token = await this.tokenService.verifyToken(this.tokenService.getToken(req))
             const updatedPost = await this.postService.updatePost({
                 _id: postId,
-                content,
-                title,
+                content: postData.content,
+                title: postData.title,
                 userId: token.userId
             })
 
-            res.status(200).json({ 
-                message: "Post updated", 
-                post: updatedPost 
+            res.status(200).json({
+                message: "Post updated",
+                post: updatedPost
             })
         } catch (error) {
             next(error)
