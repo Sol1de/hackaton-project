@@ -67,5 +67,17 @@ export class UserController {
         }
     }
 
+    public async getUsers(req: Request, res: Response, next: NextFunction) {
+        try {
+            const users = await this.userService.getUsers()
+
+            res.status(200).json({
+                users: users,
+            })
+        } catch (error) {
+            next(error)
+        }
+    }
+
     //TODO faire un getUsers, getUser, updateUser, deleteUser & les routes qui vont avec
 }

@@ -1,12 +1,12 @@
-import {LoginUserInput, RegisterUserInput} from "../schemas/user.schema"
+import { LoginUserInput, RegisterUserInput } from "../schemas/user.schema"
 import { User } from "../models/users.model"
-import {injectable} from "tsyringe"
-import {UtilsService} from "./utils.service"
-import {Token} from "../models/tokens.model"
-import {TokenInterface} from "../types/token.type"
-import {TokenService} from "./token.service"
+import { injectable } from "tsyringe"
+import { UtilsService } from "./utils.service"
+import { Token } from "../models/tokens.model"
+import { TokenInterface } from "../types/token.type"
+import { TokenService } from "./token.service"
 import { UserError } from "../errors/user.error"
-import {TokenError} from "../errors/token.error"
+import { TokenError } from "../errors/token.error"
 
 @injectable()
 export class UserService {
@@ -78,5 +78,9 @@ export class UserService {
         } catch (error) {
             throw UserError.logoutFailed()
         }
+    }
+
+    public async getUsers() {
+        return User.find()
     }
 }

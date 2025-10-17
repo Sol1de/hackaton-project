@@ -9,5 +9,7 @@ router.use('/users', userRouter)
 router.use('/posts', postRouter)
 
 router.get('/', (req: Request, res: Response) => {
-    res.send('Hello World!')
+    res.send({
+        message: 'Hello World !'
+    })
 })

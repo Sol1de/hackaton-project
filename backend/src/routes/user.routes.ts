@@ -16,9 +16,7 @@ userRouter.post('/logout',
     authMiddleware.authenticate.bind(authMiddleware),
     userController.logout.bind(userController))
 
-userRouter.get('/', (req, res) => {
-    res.send('Route get all users')
-})
+userRouter.get('/', userController.getUsers.bind(userController))
 
 userRouter.get('/:id', (req, res) => {
     res.send('Route get user by id')
