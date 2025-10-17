@@ -7,7 +7,9 @@ import { TokenInterface } from "../types/token.type"
 import { TokenService } from "./token.service"
 import { UserError } from "../errors/user.error"
 import { TokenError } from "../errors/token.error"
-import {UpdateUserInterface, UserInterface} from "../types/user.type";
+import {DeleteUserInterface, UpdateUserInterface, UserInterface} from "../types/user.type";
+import {Post} from "../models/posts.model";
+import {PostError} from "../errors/post.error";
 
 @injectable()
 export class UserService {
@@ -124,5 +126,21 @@ export class UserService {
         }
 
         return User.findByIdAndUpdate(userData._id, updateData, { new: true })
+    }
+
+    public async deleteUser(userData: DeleteUserInterface) {
+        this.utilsService.validateObjectId(userData._id)
+
+        const user = await User.findById(userData._id)
+
+        if (!user) {
+            throw UserError.userNotFound(userData._id)
+        }
+
+        if (user._id.toString() !== userData.userId.toString()) {
+            throw UserError.unauthorizedAccess()
+        }
+
+        return User.findByIdAndDelete(userData._id)
     }
 }

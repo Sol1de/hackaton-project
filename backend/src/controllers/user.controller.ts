@@ -120,7 +120,21 @@ export class UserController {
         }
     }
 
-    public async deleteUser(req: Request, res: Response, next: NextFunction) {}
+    public async deleteUser(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { userId } = req.params
+            const token = await this.tokenService.verifyToken(this.tokenService.getToken(req))
+            const deletedUser = await this.userService.deleteUser({ 
+                _id: userId,
+                userId: token.userId
+            })
 
-    //TODO faire deleteUser & les routes qui vont avec
+            res.status(200).json({
+                message: "User deleted",
+                user: deletedUser,
+            })
+        } catch (error) {
+            next(error)
+        }
+    }
 }

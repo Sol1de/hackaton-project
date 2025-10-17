@@ -21,8 +21,10 @@ userRouter.get('/', userController.getUsers.bind(userController))
 userRouter.get('/:userId', userController.getUser.bind(userController))
 
 userRouter.put
-('/:userId', userController.updateUser.bind(userController))
+('/:userId',
+    authMiddleware.authenticate.bind(authMiddleware),
+    userController.updateUser.bind(userController))
 
-userRouter.delete('/:userId', (req, res) => {
-    res.send('Route delete user')
-})
+userRouter.delete('/:userId',
+    authMiddleware.authenticate.bind(authMiddleware),
+    userController.deleteUser.bind(userController))
