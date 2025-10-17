@@ -19,7 +19,8 @@ const postsShema = new mongoose.Schema({
         required: true,
         maxlength: [1000, 'The title must contain a maximum of 1000 characters.']
     },
-    
+}, {
+    timestamps: true
 })
 
 export const Post = mongoose.model('Post', postsShema)
