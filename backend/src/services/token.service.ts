@@ -2,9 +2,10 @@ import { injectable } from "tsyringe"
 import { Token } from "../models/tokens.model"
 import mongoose from "mongoose"
 import crypto from "crypto"
-import {TokenPayloadInterface} from "../types/token.type"
-import {UtilsService} from "./utils.service"
+import { TokenPayloadInterface } from "../types/token.type"
+import { UtilsService } from "./utils.service"
 import { TokenError } from "../errors/token.error"
+import { Request } from "express"
 
 @injectable()
 export class TokenService {
@@ -78,5 +79,19 @@ export class TokenService {
             console.error('Error while cleaning tokens: ', error)
             throw TokenError.cleanTokensFailed()
         }
+    }
+
+    public getToken(req: Request): string {
+        let token = req.headers['authorization']
+
+        if (!token) {
+            throw TokenError.missingToken()
+        }
+
+        if (token.startsWith('Bearer ')) {
+            token = token.substring(7)
+        }
+
+        return token
     }
 }
