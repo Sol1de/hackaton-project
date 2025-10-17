@@ -8,3 +8,21 @@ export interface PostInterface {
     createdAt?: Date
     updatedAt?: Date
 }
+
+export interface CreatePostInterface {
+    content: string
+    title: string
+    userId: mongoose.Types.ObjectId
+}
+
+export interface UpdatePostInterface {
+    _id: string
+    content?: string
+    title?: string
+    userId: mongoose.Types.ObjectId
+}
+
+export interface DeletePostInterface {
+    _id: string
+    userId: mongoose.Types.ObjectId
+}

@@ -39,7 +39,11 @@ export class PostController {
         try {
             const { content, title } = req.body
             const token = await this.tokenService.verifyToken(this.tokenService.getToken(req))
-            const post = await this.postService.createPost(content, title, token.userId)
+            const post = await this.postService.createPost({
+                content,
+                title,
+                userId: token.userId
+            })
 
             res.status(201).json({
                 post: post
@@ -51,9 +55,15 @@ export class PostController {
 
     public async updatePost(req: Request, res: Response, next: NextFunction) {
         try {
-            const { id } = req.params
-            const { content } = req.body
-            const updatedPost = await this.postService.updatePost(id, content)
+            const { postId } = req.params
+            const { content, title } = req.body
+            const token = await this.tokenService.verifyToken(this.tokenService.getToken(req))
+            const updatedPost = await this.postService.updatePost({
+                _id: postId,
+                content,
+                title,
+                userId: token.userId
+            })
 
             res.status(200).json({ 
                 message: "Post updated", 
@@ -66,8 +76,12 @@ export class PostController {
 
     public async deletePost(req: Request, res: Response, next: NextFunction) {
         try {
-            const { id } = req.params
-            const deletedPost = await this.postService.deletePost(id)
+            const { postId } = req.params
+            const token = await this.tokenService.verifyToken(this.tokenService.getToken(req))
+            const deletedPost = await this.postService.deletePost({
+                _id: postId,
+                userId: token.userId
+            })
 
             res.status(200).json({ 
                 message: "Post deleted", 

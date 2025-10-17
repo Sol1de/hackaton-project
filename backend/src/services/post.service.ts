@@ -1,5 +1,5 @@
 import { Post } from "../models/posts.model"
-import { PostInterface } from "../types/post.type"
+import { PostInterface, CreatePostInterface, UpdatePostInterface, DeletePostInterface } from "../types/post.type"
 import mongoose from "mongoose"
 import { PostError } from "../errors/post.error"
 
@@ -25,18 +25,18 @@ export class PostService {
         return post
     }
 
-    async createPost(content: string, title: string, userId: mongoose.Types.ObjectId){
-        if (!content || !title) {
+    async createPost(postData: CreatePostInterface){
+        if (!postData.content || !postData.title) {
             throw PostError.invalidPostData({ 
-                content: !content ? "Content is required" : undefined,
-                title: !title ? "Title is required" : undefined
+                content: !postData.content ? "Content is required" : undefined,
+                title: !postData.title ? "Title is required" : undefined
             })
         }
 
         const post: PostInterface = {
-            content,
-            userId,
-            title
+            content: postData.content,
+            userId: postData.userId,
+            title: postData.title
         }
 
         try {
@@ -46,26 +46,46 @@ export class PostService {
         }
     }
 
-    async updatePost(id: string, content: string){
-        this.validateObjectId(id)
-        if (!content) {
-            throw PostError.invalidPostData({ content: "Content is required" })
-        }
-        const updatedPost = await Post.findByIdAndUpdate(id, { content }, { new: true })
-        if (!updatedPost) {
-            throw PostError.postNotFound(id)
+    async updatePost(postData: UpdatePostInterface){
+        this.validateObjectId(postData._id)
+
+        if (!postData.content && !postData.title) {
+            throw PostError.invalidPostData({
+                message: "At least one field must be provided"
+            })
         }
 
-        return updatedPost
+        const post = await Post.findById(postData._id)
+
+        if (!post) {
+            throw PostError.postNotFound(postData._id)
+        }
+
+        if (post.userId.toString() !== postData.userId.toString()) {
+            throw PostError.unauthorizedPostAccess()
+        }
+
+        const updateData: Partial<PostInterface> = {
+            content: postData.content,
+            title: postData.title
+        }
+
+        return Post.findByIdAndUpdate(postData._id, updateData, {new: true})
     }
 
-    async deletePost(id: string){
-        this.validateObjectId(id)
-        const deletedPost = await Post.findByIdAndDelete(id)
-        if (!deletedPost) {
-            throw PostError.postNotFound(id)
+    async deletePost(postData: DeletePostInterface){
+        this.validateObjectId(postData._id)
+
+        const post = await Post.findById(postData._id)
+
+        if (!post) {
+            throw PostError.postNotFound(postData._id)
         }
 
-        return deletedPost
+        if (post.userId.toString() !== postData.userId.toString()) {
+            throw PostError.unauthorizedPostAccess()
+        }
+
+        return Post.findByIdAndDelete(postData._id)
     }
 }
