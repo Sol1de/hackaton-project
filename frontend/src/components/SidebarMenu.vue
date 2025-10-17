@@ -21,9 +21,16 @@
         />
 
         <nav class="flex flex-col gap-6 w-full px-4">
-          <Button
+          <!-- <Button
             @click="openModal"
             class="w-full bg-black text-white hover:bg-gray-900"
+          >
+            New Post
+          </Button> -->
+          <Button
+            @click="openModal"
+            variant="outline"
+            class="w-full border-black"
           >
             New Post
           </Button>
