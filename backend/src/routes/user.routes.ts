@@ -18,19 +18,13 @@ userRouter.post('/logout',
 
 userRouter.get('/', userController.getUsers.bind(userController))
 
-userRouter.get('/:id', (req, res) => {
-    res.send('Route get user by id')
-})
+userRouter.get('/:userId', userController.getUser.bind(userController))
 
-userRouter.post('/', (req, res) => {
-    res.send('Route create user')
-})
-
-userRouter.post
-('/:id', (req, res) => {
+userRouter.put
+('/:userId', (req, res) => {
     res.send('Route update user')
 })
 
-userRouter.post('/:id', (req, res) => {
+userRouter.delete('/:userId', (req, res) => {
     res.send('Route delete user')
 })

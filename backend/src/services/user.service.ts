@@ -83,4 +83,15 @@ export class UserService {
     public async getUsers() {
         return User.find()
     }
+
+    public async getUser(userId: string) {
+        this.utilsService.validateObjectId(userId)
+        const user = await User.findOne({ _id: userId })
+
+        if (!user) {
+            throw UserError.userNotFound(userId)
+        }
+
+        return user
+    }
 }

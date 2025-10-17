@@ -79,5 +79,22 @@ export class UserController {
         }
     }
 
-    //TODO faire un getUsers, getUser, updateUser, deleteUser & les routes qui vont avec
+    public async getUser(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { userId } = req.params
+            const user = await this.userService.getUser(userId)
+
+            res.status(200).json({
+                user: user,
+            })
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    public async updateUser(req: Request, res: Response, next: NextFunction) {}
+
+    public async deleteUser(req: Request, res: Response, next: NextFunction) {}
+
+    //TODO faire un updateUser, deleteUser & les routes qui vont avec
 }
