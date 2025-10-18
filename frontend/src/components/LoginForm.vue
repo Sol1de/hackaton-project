@@ -25,12 +25,12 @@ const authStore = useAuthStore()
 
 const email = ref('')
 const password = ref('')
-const error = ref<string | null>(null)
+const errors = ref<string[]>([])
 const isLoading = ref(false)
 
 const handleLogin = async (event: Event) => {
   event.preventDefault()
-  error.value = null
+  errors.value = []
   isLoading.value = true
 
   try {
@@ -42,7 +42,13 @@ const handleLogin = async (event: Event) => {
     authStore.setAuth(response.token, response.user)
     await router.push({ name: 'home' })
   } catch (err: any) {
-    error.value = err.response?.data?.message || 'An error occurred during login'
+    const responseData = err.response?.data
+
+    if (responseData?.errors && Array.isArray(responseData.errors)) {
+      errors.value = responseData.errors.map((error: any) => error.message)
+    } else {
+      errors.value = [responseData.message]
+    }
   } finally {
     isLoading.value = false
   }
@@ -64,8 +70,11 @@ const handleLogin = async (event: Event) => {
         <form @submit="handleLogin">
           <div class="grid gap-6">
             <div class="grid gap-4">
-              <div v-if="error" class="mt-4 p-3 text-sm text-red-600 bg-red-50 border border-red-200 rounded-md">
-                {{ error }}
+              <div v-if="errors.length > 0" class="p-3 text-sm text-red-600 bg-red-50 border border-red-200 rounded-md">
+                <ul v-if="errors.length > 1" class="list-disc list-inside space-y-1">
+                  <li v-for="(errorMsg, index) in errors" :key="index">{{ errorMsg }}</li>
+                </ul>
+                <p v-else>{{ errors[0] }}</p>
               </div>
               <div class="grid gap-3">
                 <Label for="email">Email</Label>
