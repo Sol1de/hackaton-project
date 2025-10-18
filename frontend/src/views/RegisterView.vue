@@ -4,7 +4,7 @@ export const description = "A Register page with a muted background color."
 
 <script setup lang="ts">
 import { GalleryVerticalEnd } from "lucide-vue-next"
-import RegisterForm from '@/components/RegisterForm.vue'
+import RegisterForm from '@/components/forms/RegisterForm.vue'
 </script>
 
 <template>

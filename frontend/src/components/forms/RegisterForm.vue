@@ -15,7 +15,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { registerFetch } from '@/api/register.fetch.ts'
 import type { ApiError } from '@/types/error.type.ts'
-import DangerAlert from '@/components/DangerAlert.vue'
+import DangerAlert from '@/components/alerts/DangerAlert.vue'
 
 const props = defineProps<{
   class?: HTMLAttributes["class"]
