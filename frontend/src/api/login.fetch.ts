@@ -1,23 +1,5 @@
 import axios from 'axios'
-
-interface LoginCredentials {
-  email: string
-  password: string
-}
-
-interface LoginResponse {
-  token: string
-  user: {
-    _id: string
-    email: string
-    firstname: string
-    lastname: string
-    avatar?: string
-    description?: string
-    createdAt: Date
-    updatedAt: Date
-  }
-}
+import type { LoginCredentials, LoginResponse } from '@/types/login.type.ts'
 
 export const loginFetch = async (data: LoginCredentials): Promise<LoginResponse> => {
   const response = await axios.post<LoginResponse>(
