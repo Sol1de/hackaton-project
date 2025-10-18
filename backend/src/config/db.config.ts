@@ -43,7 +43,7 @@ async function main() {
         })
 
         await Promise.all(collectionChecks)
-        console.log('All collections initialized successfully')
+        console.log('All collections initialized')
     } catch (error) {
         console.error('Error during initialization:', error)
         process.exit(1)
