@@ -14,7 +14,7 @@ export const registerUserSchema = z.object({
         .min(1, { message: "Last name is required" })
         .max(50, { message: "Last name must be at most 50 characters long" }),
     avatar: z
-        .url({ message: "Avatar must be a valid URL" })
+        .string()
         .optional(),
     description: z
         .string()
