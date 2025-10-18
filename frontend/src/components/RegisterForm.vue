@@ -13,34 +13,39 @@ import {
 } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { loginFetch } from '@/api/login.fetch'
 import { useAuthStore } from '@/stores/auth'
+import { registerFetch } from '@/api/register.fetch.ts'
 
 const props = defineProps<{
   class?: HTMLAttributes["class"]
 }>()
 
 const router = useRouter()
-const authStore = useAuthStore()
 
 const email = ref('')
 const password = ref('')
+const firstname = ref('')
+const lastname = ref('')
+const avatar = ref('')
+const description = ref('')
 const errors = ref<string[]>([])
 const isLoading = ref(false)
 
 const handleRegister = async (event: Event) => {
-  event.preventDefault()
   errors.value = []
   isLoading.value = true
 
   try {
-    const response = await loginFetch({
+    const response = await registerFetch({
       email: email.value,
-      password: password.value
+      password: password.value,
+      firstname: firstname.value,
+      lastname: lastname.value,
+      avatar: avatar?.value,
+      description: description?.value,
     })
 
-    authStore.setAuth(response.token, response.user)
-    await router.push({ name: 'home' })
+    await router.push({ name: 'login' })
   } catch (err: any) {
     const responseData = err.response?.data
 
@@ -67,7 +72,7 @@ const handleRegister = async (event: Event) => {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <form @submit="handleRegister">
+        <form @submit.prevent="handleRegister">
           <div class="grid gap-6">
             <div class="grid gap-4">
               <div v-if="errors.length > 0" class="p-3 text-sm text-red-600 bg-red-50 border border-red-200 rounded-md">
@@ -81,7 +86,7 @@ const handleRegister = async (event: Event) => {
                   <Label for="firstname">First name</Label>
                   <Input
                     id="firstname"
-                    v-model="email"
+                    v-model="firstname"
                     type="text"
                     placeholder="John"
                     required
@@ -91,7 +96,7 @@ const handleRegister = async (event: Event) => {
                   <Label for="lastname">Last name</Label>
                   <Input
                     id="lastname"
-                    v-model="password"
+                    v-model="lastname"
                     type="text"
                     placeholder="Doe"
                     required />
@@ -114,7 +119,7 @@ const handleRegister = async (event: Event) => {
             </div>
             <div class="flex flex-col gap-4">
               <Button type="submit" class="w-full" :disabled="isLoading">
-                {{ isLoading ? 'Logging in...' : 'Login' }}
+                {{ isLoading ? 'Creating account...' : 'Create an account' }}
               </Button>
               <div class="text-center text-sm">
                 Already have an account?

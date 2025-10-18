@@ -19,10 +19,10 @@ interface LoginResponse {
   }
 }
 
-export const loginFetch = async (credentials: LoginCredentials): Promise<LoginResponse> => {
+export const loginFetch = async (data: LoginCredentials): Promise<LoginResponse> => {
   const response = await axios.post<LoginResponse>(
-    'http://localhost:3000/api/users/login',
-    credentials
+    `${import.meta.env.VITE_BASE_URL}/api/users/login`,
+    data
   )
   return response.data
 }
