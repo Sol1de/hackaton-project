@@ -15,6 +15,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { loginFetch } from '@/api/login.fetch'
 import { useAuthStore } from '@/stores/auth'
+import type { ApiError } from '@/types/error.type.ts'
 
 const props = defineProps<{
   class?: HTMLAttributes["class"]
@@ -40,13 +41,15 @@ const handleLogin = async () => {
 
     authStore.setAuth(response.token, response.user)
     await router.push({ name: 'home' })
-  } catch (err: any) {
-    const responseData = err.response?.data
+  } catch (err) {
+    const responseData = (err as ApiError).response?.data
 
     if (responseData?.errors && Array.isArray(responseData.errors)) {
-      errors.value = responseData.errors.map((error: any) => error.message)
-    } else {
+      errors.value = responseData.errors.map((error) => error.message)
+    } else if (responseData?.message) {
       errors.value = [responseData.message]
+    } else {
+      errors.value = ['An unexpected error occurred']
     }
   } finally {
     isLoading.value = false
