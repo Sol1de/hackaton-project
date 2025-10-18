@@ -78,7 +78,7 @@ export class CommentController{
         try {
             const { commentId } = req.params
             const token = await this.tokenService.verifyToken(this.tokenService.getToken(req))
-            const deletedComment = await this.commentService.deletComment({
+            const deletedComment = await this.commentService.deleteComment({
                 _id: commentId,
                 userId: token.userId
             })

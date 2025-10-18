@@ -67,7 +67,7 @@ export class CommentService {
         return Comment.findByIdAndUpdate(commentData._id, updateData, { new: true });
     }
 
-    async deletComment(commentData: DeleteCommentInterface){
+    async deleteComment(commentData: DeleteCommentInterface){
         this.utilsService.validateObjectId(commentData._id)
 
         const comment = await Comment.findById(commentData._id);
