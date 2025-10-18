@@ -28,7 +28,8 @@ const password = ref('')
 const errors = ref<string[]>([])
 const isLoading = ref(false)
 
-const handleLogin = async (event: Event) => {
+const handleRegister = async (event: Event) => {
+  event.preventDefault()
   errors.value = []
   isLoading.value = true
 
@@ -59,14 +60,14 @@ const handleLogin = async (event: Event) => {
     <Card>
       <CardHeader class="text-center">
         <CardTitle class="text-xl">
-          Welcome back
+          Welcome aboard
         </CardTitle>
         <CardDescription>
-          Login with your email and password
+          Enter your information to create an account
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <form @submit.prevent="handleLogin">
+        <form @submit="handleRegister">
           <div class="grid gap-6">
             <div class="grid gap-4">
               <div v-if="errors.length > 0" class="p-3 text-sm text-red-600 bg-red-50 border border-red-200 rounded-md">
@@ -74,6 +75,27 @@ const handleLogin = async (event: Event) => {
                   <li v-for="(errorMsg, index) in errors" :key="index">{{ errorMsg }}</li>
                 </ul>
                 <p v-else>{{ errors[0] }}</p>
+              </div>
+              <div class="grid grid-cols-2 gap-3">
+                <div class="grid gap-3">
+                  <Label for="firstname">First name</Label>
+                  <Input
+                    id="firstname"
+                    v-model="email"
+                    type="text"
+                    placeholder="John"
+                    required
+                  />
+                </div>
+                <div class="grid gap-3">
+                  <Label for="lastname">Last name</Label>
+                  <Input
+                    id="lastname"
+                    v-model="password"
+                    type="text"
+                    placeholder="Doe"
+                    required />
+                </div>
               </div>
               <div class="grid gap-3">
                 <Label for="email">Email</Label>
@@ -86,15 +108,7 @@ const handleLogin = async (event: Event) => {
                 />
               </div>
               <div class="grid gap-3">
-                <div class="flex items-center">
-                  <Label for="password">Password</Label>
-                  <a
-                    href="#"
-                    class="ml-auto text-sm underline-offset-4 hover:underline"
-                  >
-                    Forgot your password?
-                  </a>
-                </div>
+                <Label for="password">Password</Label>
                 <Input id="password" v-model="password" type="password" required />
               </div>
             </div>
@@ -103,8 +117,8 @@ const handleLogin = async (event: Event) => {
                 {{ isLoading ? 'Logging in...' : 'Login' }}
               </Button>
               <div class="text-center text-sm">
-                Don't have an account?
-                <RouterLink to="/register" class="underline underline-offset-4">Sign up</RouterLink>
+                Already have an account?
+                <RouterLink to="/login" class="underline underline-offset-4">Sign in</RouterLink>
               </div>
             </div>
           </div>
