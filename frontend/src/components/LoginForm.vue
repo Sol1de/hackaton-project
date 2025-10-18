@@ -16,6 +16,7 @@ import { Label } from '@/components/ui/label'
 import { loginFetch } from '@/api/login.fetch'
 import { useAuthStore } from '@/stores/auth'
 import type { ApiError } from '@/types/error.type.ts'
+import DangerAlert from '@/components/DangerAlert.vue'
 
 const props = defineProps<{
   class?: HTMLAttributes["class"]
@@ -72,12 +73,7 @@ const handleLogin = async () => {
         <form @submit.prevent="handleLogin">
           <div class="grid gap-6">
             <div class="grid gap-4">
-              <div v-if="errors.length > 0" class="p-3 text-sm text-red-600 bg-red-50 border border-red-200 rounded-md">
-                <ul v-if="errors.length > 1" class="list-disc list-inside space-y-1">
-                  <li v-for="(errorMsg, index) in errors" :key="index">{{ errorMsg }}</li>
-                </ul>
-                <p v-else>{{ errors[0] }}</p>
-              </div>
+              <DangerAlert :errors="errors" />
               <div class="grid gap-3">
                 <Label for="email">Email</Label>
                 <Input

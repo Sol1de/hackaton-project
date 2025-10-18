@@ -15,6 +15,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { registerFetch } from '@/api/register.fetch.ts'
 import type { ApiError } from '@/types/error.type.ts'
+import DangerAlert from '@/components/DangerAlert.vue'
 
 const props = defineProps<{
   class?: HTMLAttributes["class"]
@@ -77,12 +78,7 @@ const handleRegister = async () => {
         <form @submit.prevent="handleRegister">
           <div class="grid gap-6">
             <div class="grid gap-4">
-              <div v-if="errors.length > 0" class="p-3 text-sm text-red-600 bg-red-50 border border-red-200 rounded-md">
-                <ul v-if="errors.length > 1" class="list-disc list-inside space-y-1">
-                  <li v-for="(errorMsg, index) in errors" :key="index">{{ errorMsg }}</li>
-                </ul>
-                <p v-else>{{ errors[0] }}</p>
-              </div>
+              <DangerAlert :errors="errors" />
               <div class="grid grid-cols-2 gap-3">
                 <div class="grid gap-3">
                   <Label for="firstname">First name</Label>
