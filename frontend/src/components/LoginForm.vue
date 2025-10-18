@@ -28,7 +28,7 @@ const password = ref('')
 const errors = ref<string[]>([])
 const isLoading = ref(false)
 
-const handleLogin = async (event: Event) => {
+const handleLogin = async () => {
   errors.value = []
   isLoading.value = true
 

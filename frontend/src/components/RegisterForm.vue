@@ -31,7 +31,7 @@ const description = ref('')
 const errors = ref<string[]>([])
 const isLoading = ref(false)
 
-const handleRegister = async (event: Event) => {
+const handleRegister = async () => {
   errors.value = []
   isLoading.value = true
 
