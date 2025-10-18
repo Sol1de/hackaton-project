@@ -64,6 +64,9 @@ const handleLogin = async (event: Event) => {
         <form @submit="handleLogin">
           <div class="grid gap-6">
             <div class="grid gap-4">
+              <div v-if="error" class="mt-4 p-3 text-sm text-red-600 bg-red-50 border border-red-200 rounded-md">
+                {{ error }}
+              </div>
               <div class="grid gap-3">
                 <Label for="email">Email</Label>
                 <Input
@@ -100,9 +103,6 @@ const handleLogin = async (event: Event) => {
             </div>
           </div>
         </form>
-        <div v-if="error" class="mt-4 p-3 text-sm text-red-600 bg-red-50 border border-red-200 rounded-md">
-          {{ error }}
-        </div>
       </CardContent>
     </Card>
     <div class="text-muted-foreground *:[a]:hover:text-primary text-center text-xs text-balance *:[a]:underline *:[a]:underline-offset-4">
