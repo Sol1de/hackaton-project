@@ -1,4 +1,4 @@
-export interface RegisterCredentials {
+export interface RegisterData {
   email: string
   password: string
   firstname: string
