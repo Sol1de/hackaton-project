@@ -16,7 +16,7 @@ import { Label } from '@/components/ui/label'
 import { loginFetch } from '@/api/login.fetch'
 import { useAuthStore } from '@/stores/auth'
 import type { ApiError } from '@/types/error.type.ts'
-import DangerAlert from '@/components/alerts/DangerAlert.vue'
+import DangerAlert from '@/components/ui/alert/DangerAlert.vue'
 
 const props = defineProps<{
   class?: HTMLAttributes["class"]
