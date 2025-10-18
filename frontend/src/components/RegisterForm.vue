@@ -36,7 +36,7 @@ const handleRegister = async () => {
   isLoading.value = true
 
   try {
-    const response = await registerFetch({
+    await registerFetch({
       email: email.value,
       password: password.value,
       firstname: firstname.value,
