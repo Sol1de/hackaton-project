@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from "vue"
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 import { cn } from "@/lib/utils"
 import { Button } from '@/components/ui/button'
 import {
@@ -11,10 +13,40 @@ import {
 } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { loginFetch } from '@/api/login.fetch'
+import { useAuthStore } from '@/stores/auth'
 
 const props = defineProps<{
   class?: HTMLAttributes["class"]
 }>()
+
+const router = useRouter()
+const authStore = useAuthStore()
+
+const email = ref('')
+const password = ref('')
+const error = ref<string | null>(null)
+const isLoading = ref(false)
+
+const handleLogin = async (event: Event) => {
+  event.preventDefault()
+  error.value = null
+  isLoading.value = true
+
+  try {
+    const response = await loginFetch({
+      email: email.value,
+      password: password.value
+    })
+
+    authStore.setAuth(response.token, response.user)
+    await router.push({ name: 'home' })
+  } catch (err: any) {
+    error.value = err.response?.data?.message || 'An error occurred during login'
+  } finally {
+    isLoading.value = false
+  }
+}
 </script>
 
 <template>
@@ -29,13 +61,14 @@ const props = defineProps<{
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <form>
+        <form @submit="handleLogin">
           <div class="grid gap-6">
             <div class="grid gap-4">
               <div class="grid gap-3">
                 <Label for="email">Email</Label>
                 <Input
                   id="email"
+                  v-model="email"
                   type="email"
                   placeholder="email@example.com"
                   required
@@ -51,12 +84,12 @@ const props = defineProps<{
                     Forgot your password?
                   </a>
                 </div>
-                <Input id="password" type="password" required />
+                <Input id="password" v-model="password" type="password" required />
               </div>
             </div>
             <div class="flex flex-col gap-4">
-              <Button type="submit" class="w-full">
-                Login
+              <Button type="submit" class="w-full" :disabled="isLoading">
+                {{ isLoading ? 'Logging in...' : 'Login' }}
               </Button>
               <div class="text-center text-sm">
                 Don't have an account?
@@ -67,6 +100,9 @@ const props = defineProps<{
             </div>
           </div>
         </form>
+        <div v-if="error" class="mt-4 p-3 text-sm text-red-600 bg-red-50 border border-red-200 rounded-md">
+          {{ error }}
+        </div>
       </CardContent>
     </Card>
     <div class="text-muted-foreground *:[a]:hover:text-primary text-center text-xs text-balance *:[a]:underline *:[a]:underline-offset-4">
