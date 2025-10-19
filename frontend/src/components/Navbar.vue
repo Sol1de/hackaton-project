@@ -15,7 +15,7 @@ import {
   LogOut,
   Info,
 } from 'lucide-vue-next'
-import { ref, computed, watchEffect } from 'vue'
+import { ref, computed } from 'vue'
 import { useAuthStore } from '@/stores/auth'
 import {
   AccordionContent,
@@ -189,7 +189,7 @@ const getUserInitials = computed(() => {
   <section class="py-4">
     <div class="container mx-auto">
       <!-- Desktop Menu -->
-      <nav class="hidden justify-between lg:flex">
+      <nav class="hidden justify-between items-center lg:flex">
         <div class="flex items-center gap-6">
           <!-- Logo -->
           <a :href="logo.url" class="flex items-center gap-2">
@@ -198,59 +198,57 @@ const getUserInitials = computed(() => {
               {{ logo.title }}
             </span>
           </a>
-          <div class="flex items-center">
-            <NavigationMenu>
-              <NavigationMenuList class="flex items-center">
-                <template v-for="item in currentMenu" :key="item.title">
-                  <!-- Menu item with subitems -->
-                  <NavigationMenuItem v-if="item.items">
-                    <NavigationMenuTrigger>{{ item.title }}</NavigationMenuTrigger>
-                    <NavigationMenuContent class="bg-popover text-popover-foreground">
-                      <NavigationMenuLink
-                        v-for="subItem in item.items"
-                        :key="subItem.title"
-                        as-child
-                        class="w-80"
-                      >
-                        <a
-                          class="hover:bg-muted hover:text-accent-foreground flex min-w-80 select-none flex-row gap-4 rounded-md p-3 leading-none no-underline outline-none transition-colors"
-                          :href="subItem.url"
-                        >
-                          <div class="text-foreground">
-                            <component
-                              :is="subItem.icon"
-                              v-if="subItem.icon"
-                              class="size-5 shrink-0"
-                            />
-                          </div>
-                          <div>
-                            <div class="text-sm font-semibold">{{ subItem.title }}</div>
-                            <p
-                              v-if="subItem.description"
-                              class="text-muted-foreground text-sm leading-snug"
-                            >
-                              {{ subItem.description }}
-                            </p>
-                          </div>
-                        </a>
-                      </NavigationMenuLink>
-                    </NavigationMenuContent>
-                  </NavigationMenuItem>
-
-                  <!-- Simple menu item -->
-                  <NavigationMenuItem v-else>
+          <NavigationMenu class="items-center">
+            <NavigationMenuList>
+              <template v-for="item in currentMenu" :key="item.title">
+                <!-- Menu item with subitems -->
+                <NavigationMenuItem v-if="item.items">
+                  <NavigationMenuTrigger>{{ item.title }}</NavigationMenuTrigger>
+                  <NavigationMenuContent class="bg-popover text-popover-foreground">
                     <NavigationMenuLink
-                      :href="item.url"
-                      class="bg-background hover:bg-muted hover:text-accent-foreground group inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors"
+                      v-for="subItem in item.items"
+                      :key="subItem.title"
+                      as-child
+                      class="w-80"
                     >
-                      <component :is="item.icon" v-if="item.icon" class="size-5 mr-2" />
-                      {{ item.title }}
+                      <a
+                        class="hover:bg-muted hover:text-accent-foreground flex min-w-80 select-none flex-row gap-4 rounded-md p-3 leading-none no-underline outline-none transition-colors"
+                        :href="subItem.url"
+                      >
+                        <div class="text-foreground">
+                          <component
+                            :is="subItem.icon"
+                            v-if="subItem.icon"
+                            class="size-5 shrink-0"
+                          />
+                        </div>
+                        <div>
+                          <div class="text-sm font-semibold">{{ subItem.title }}</div>
+                          <p
+                            v-if="subItem.description"
+                            class="text-muted-foreground text-sm leading-snug"
+                          >
+                            {{ subItem.description }}
+                          </p>
+                        </div>
+                      </a>
                     </NavigationMenuLink>
-                  </NavigationMenuItem>
-                </template>
-              </NavigationMenuList>
-            </NavigationMenu>
-          </div>
+                  </NavigationMenuContent>
+                </NavigationMenuItem>
+
+                <!-- Simple menu item -->
+                <NavigationMenuItem v-else>
+                  <NavigationMenuLink
+                    :href="item.url"
+                    class="bg-background hover:bg-muted hover:text-accent-foreground group inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors"
+                  >
+                    <component :is="item.icon" v-if="item.icon" class="size-5 mr-2" />
+                    {{ item.title }}
+                  </NavigationMenuLink>
+                </NavigationMenuItem>
+              </template>
+            </NavigationMenuList>
+          </NavigationMenu>
         </div>
 
         <!-- Right side: Auth buttons or User menu -->
