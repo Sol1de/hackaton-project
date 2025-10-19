@@ -4,48 +4,48 @@ import type { FooterProps } from '@/types/props/layout.props'
 
 const props = withDefaults(defineProps<FooterProps>(), {
   logo: () => ({
-    url: "https://www.shadcnblocks.com",
+    url: "/",
     src: "https://deifkwefumgah.cloudfront.net/shadcnblocks/block/logos/shadcnblockscom-icon.svg",
     alt: "logo",
-    title: "Shadcnblocks.com",
+    title: "PostScriptum",
   }),
   sections: () => [
     {
-      title: "Product",
+      title: "Platform",
       links: [
-        { name: "Overview", href: "#" },
-        { name: "Pricing", href: "#" },
-        { name: "Marketplace", href: "#" },
+        { name: "Explore", href: "/explore" },
+        { name: "Create Post", href: "/posts/create" },
+        { name: "Writers", href: "/users" },
         { name: "Features", href: "#" },
       ],
     },
     {
-      title: "Company",
+      title: "Community",
       links: [
-        { name: "About", href: "#" },
-        { name: "Team", href: "#" },
-        { name: "Blog", href: "#" },
-        { name: "Careers", href: "#" },
+        { name: "About", href: "/about" },
+        { name: "Guidelines", href: "#" },
+        { name: "Blog", href: "/explore" },
+        { name: "Support", href: "#" },
       ],
     },
     {
       title: "Resources",
       links: [
-        { name: "Help", href: "#" },
-        { name: "Sales", href: "#" },
-        { name: "Advertise", href: "#" },
+        { name: "Help Center", href: "#" },
+        { name: "Writing Tips", href: "#" },
+        { name: "Contact", href: "#" },
         { name: "Privacy", href: "#" },
       ],
     },
   ],
-  description: () => "A collection of components for your startup business or side project.",
+  description: () => "A modern blogging platform where your thoughts matter. Share stories, connect with readers, and build your community.",
   socialLinks: () => [
     { icon: "simple-icons:instagram", href: "#", label: "Instagram" },
     { icon: "simple-icons:facebook", href: "#", label: "Facebook" },
     { icon: "simple-icons:x", href: "#", label: "Twitter" },
     { icon: "simple-icons:linkedin", href: "#", label: "LinkedIn" },
   ],
-  copyright: () => "� 2024 Shadcnblocks.com. All rights reserved.",
+  copyright: () => "� 2024 PostScriptum. All rights reserved.",
   legalLinks: () => [
     { name: "Terms and Conditions", href: "#" },
     { name: "Privacy Policy", href: "#" },
