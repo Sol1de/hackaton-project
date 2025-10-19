@@ -22,6 +22,7 @@ import {
   SheetTitle,
   SheetTrigger
 } from '@/components/ui/sheet'
+import { Button } from '@/components/ui/button'
 
 interface MenuItem {
   title: string
@@ -192,18 +193,20 @@ const isSheetOpen = ref(false)
           </div>
         </div>
         <div class="flex gap-2">
-          <a
+          <Button
+            variant="outline"
             :href="auth.login.url"
             class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground h-8 px-3"
           >
             {{ auth.login.title }}
-          </a>
-          <a
+          </Button>
+          <Button
+            variant="default"
             :href="auth.signup.url"
             class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground shadow hover:bg-primary/90 h-8 px-3"
           >
             {{ auth.signup.title }}
-          </a>
+          </Button>
         </div>
       </nav>
 
