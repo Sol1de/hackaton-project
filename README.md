@@ -15,7 +15,7 @@
 
 ---
 
-## Live Deployment
+## Deployment
 
 - **Frontend**: [https://hackaton-project-frontend.vercel.app/](https://hackaton-project-frontend.vercel.app/)
 - **Backend API**: [https://hackaton-project-backend.vercel.app/](https://hackaton-project-backend.vercel.app/)
@@ -41,7 +41,7 @@
 
 ## Overview
 
-This is a full-stack social media platform built with a **Node.js/Express backend** and **Vue 3 frontend** in a monorepo structure. Users can register, authenticate, create posts, comment, and interact with content.
+This is PostScriptum, a full-stack social media platform built with a **Node.js/Express backend** and **Vue 3 frontend** in a monorepo structure. Users can register, authenticate, create posts, comment, and interact with content.
 
 ### Key Features
 
@@ -60,7 +60,7 @@ This is a full-stack social media platform built with a **Node.js/Express backen
 
 The diagram above illustrates the relationships between the four main collections in the database:
 - **Users** → **Posts** (one-to-many)
-- **Users** → **Tokens** (one-to-many)
+- **Users** → **Tokens** (one-to-one)
 - **Users** → **Comments** (one-to-many)
 - **Posts** → **Comments** (one-to-many)
 
@@ -511,22 +511,6 @@ Authorization: Bearer <token>
 
 ---
 
-### Health Check
-
-```http
-GET /
-```
-
-**Response:**
-
-```json
-{
-  "message": "API is running"
-}
-```
-
----
-
 ## Authentication System
 
 ### Custom JWT Implementation
@@ -546,12 +530,6 @@ The platform uses a custom JWT authentication system:
 7. **Token Verification**: `AuthMiddleware.authenticate()` verifies token on protected routes
 8. **Token Expiry**: Tokens expire after 1 hour (configurable via `TOKEN_EXPIRY`)
 9. **Cleanup**: Scheduled task periodically removes expired tokens
-
-### Authorization
-
-- Service-layer authorization ensures users can only modify their own resources
-- Controllers validate ownership before update/delete operations
-- Example: `UserService.updateUser()` verifies `user._id === userId`
 
 ---
 
@@ -795,15 +773,6 @@ npm run preview  # Preview production build locally
 
 The production build is output to `frontend/dist/` directory.
 
-### Deployment
-
-This project is deployed on **Vercel**:
-
-- **Frontend**: Automatically built and deployed from `frontend/` directory
-- **Backend**: Automatically built and deployed from `backend/` directory
-
-Both deployments use the respective `.env` files configured in Vercel's environment variables.
-
 ---
 
 ## Error Handling
@@ -822,15 +791,6 @@ All errors follow a consistent format:
 }
 ```
 
-### Error Types
-
-- **400 VALIDATION_ERROR**: Invalid request data (Zod validation failed)
-- **401 UNAUTHORIZED**: Missing or invalid authentication token
-- **403 FORBIDDEN**: User not authorized to perform action
-- **404 NOT_FOUND**: Resource not found
-- **409 CONFLICT**: Duplicate resource (e.g., email already exists)
-- **500 INTERNAL_SERVER_ERROR**: Unexpected server error
-
 ### Custom Error Classes
 
 Located in `backend/src/errors/`:
@@ -846,77 +806,9 @@ Located in `backend/src/errors/`:
 
 ---
 
-## Validation
-
-### Zod Schemas
-
-Request validation is handled by Zod schemas defined in `backend/src/schemas/`.
-
-**Example - User Registration Schema:**
-
-```typescript
-{
-  email: z.string().email(),
-  password: z.string().min(8),
-  firstname: z.string().min(1).max(50),
-  lastname: z.string().min(1).max(50),
-  avatar: z.string().url().optional(),
-  description: z.string().max(500).optional()
-}
-```
-
-**Example - Post Creation Schema:**
-
-```typescript
-{
-  title: z.string().min(1).max(100),
-  content: z.string().min(1).max(1000)
-}
-```
-
-Validation errors automatically return 400 status with detailed error messages.
-
----
-
-## Scheduled Tasks
-
-### Token Cleanup Scheduler
-
-- **Location**: `backend/src/schedulers/token.scheduler.ts`
-- **Purpose**: Automatically removes expired tokens from the database
-- **Technology**: node-cron
-- **Initialization**: Automatically started when the Express app boots
-
-**Scheduler Structure:**
-
-```
-index.scheduler.ts (orchestrator)
-  └── token.scheduler.ts (cleanup task)
-```
-
----
-
-## Code Style
-
-- **TypeScript** throughout both frontend and backend
-- **Backend**: CommonJS modules (`require`/`module.exports`)
-- **Frontend**: ES modules (`import`/`export`)
-- **Commit Messages**: Gitmoji convention (`:recycle:`, `:heavy_plus_sign:`, `:lipstick:`, etc.)
-- **Code Formatting**: Prettier with ESLint
-
----
-
 ## Contributing
 
 This is a hackathon project created by **Enguerrand**, **Romain**, and **Olivier**.
-
-### Development Workflow
-
-1. Create a feature branch from `main`
-2. Make your changes with descriptive commit messages (using gitmoji)
-3. Test your changes locally (backend + frontend)
-4. Create a pull request to `main`
-5. Wait for review and merge
 
 ---
 
