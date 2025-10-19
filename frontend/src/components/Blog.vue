@@ -9,12 +9,12 @@ import { ref, onMounted } from 'vue'
 import DangerAlert from '@/components/ui/alert/DangerAlert.vue'
 
 const props = withDefaults(defineProps<BlogProps>(), {
-  tagline: 'Latest Updates',
-  heading: 'Blog Posts',
+  tagline: 'Fresh Content',
+  heading: 'Recent Posts',
   description:
-    'Discover the latest trends, tips, and best practices in modern web development. From UI components to design systems, stay updated with our expert insights.',
-  buttonText: 'View all articles',
-  buttonUrl: 'https://shadcnblocks.com',
+    'Explore the latest posts from our community of writers. From personal journeys to professional insights, discover stories that inspire, educate, and entertain.',
+  buttonText: 'View all posts',
+  buttonUrl: '/explore',
 })
 
 const posts = ref<PostPreview[]>([])

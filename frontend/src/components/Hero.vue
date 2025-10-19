@@ -5,23 +5,23 @@ import { Button } from '@/components/ui/button'
 import type { HeroProps } from '@/types/props/layout.props'
 
 const props = withDefaults(defineProps<HeroProps>(), {
-  badge: 'Your Website Builder',
-  heading: 'Blocks Built With Shadcn & Tailwind',
+  badge: 'Share Your Posts',
+  heading: 'Welcome to PostScriptum',
   description:
-    'Finely crafted components built with React, Tailwind and Shadcn UI. Developers can copy and paste these blocks directly into their project.',
+    'A modern blogging platform where your thoughts matter. Share your stories, connect with readers, and build your community. Express yourself with elegant writing tools designed for creators.',
   buttons: () => ({
     primary: {
-      text: 'Discover all components',
-      url: 'https://www.shadcnblocks.com'
+      text: 'Start Writing',
+      url: '/posts/create'
     },
     secondary: {
-      text: 'View on GitHub',
-      url: 'https://www.shadcnblocks.com'
+      text: 'Explore Posts',
+      url: '/explore'
     }
   }),
   image: () => ({
     src: 'https://deifkwefumgah.cloudfront.net/shadcnblocks/block/placeholder-1.svg',
-    alt: 'Hero section demo image showing interface components'
+    alt: 'PostScriptum blog platform interface'
   })
 })
 </script>

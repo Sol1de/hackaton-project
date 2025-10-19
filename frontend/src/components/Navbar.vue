@@ -30,7 +30,7 @@ const props = withDefaults(defineProps<NavbarProps>(), {
     url: '/',
     src: 'https://deifkwefumgah.cloudfront.net/shadcnblocks/block/logos/shadcnblockscom-icon.svg',
     alt: 'logo',
-    title: 'Social App',
+    title: 'PostScriptum',
   }),
   auth: () => ({
     login: { title: 'Log In', url: '/login' },
