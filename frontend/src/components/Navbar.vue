@@ -134,7 +134,7 @@ const isSheetOpen = ref(false)
 
 <template>
   <section class="py-4">
-    <div class="container">
+    <div class="container mx-auto">
       <!-- Desktop Menu -->
       <nav class="hidden justify-between lg:flex">
         <div class="flex items-center gap-6">
