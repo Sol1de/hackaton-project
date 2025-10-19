@@ -3,19 +3,8 @@ import { LogOut } from 'lucide-vue-next'
 import { HoverCard, HoverCardTrigger, HoverCardContent } from '@/components/ui/hover-card'
 import DangerAlert from '@/components/ui/alert/DangerAlert.vue'
 import UserAvatar from './UserAvatar.vue'
-
-interface UserData {
-  firstname: string
-  lastname: string
-  avatar?: string
-  email: string
-}
-
-interface MenuItem {
-  title: string
-  url: string
-  icon?: any
-}
+import type { UserData } from '@/types/user.types'
+import type { MenuItem } from '@/types/menu.types'
 
 interface UserDropdownMenuProps {
   user: UserData | null | undefined

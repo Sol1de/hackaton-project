@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { useAuthStore } from '@/stores/auth'
-import type { LogoutResponse } from '@/types/logout.type.ts'
+import type { LogoutResponse } from '@/types/auth.types'
 
 export const logoutFetch = async (): Promise<LogoutResponse> => {
   const token = useAuthStore().token

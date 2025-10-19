@@ -1,5 +1,5 @@
 import axios from 'axios'
-import type { RegisterData, RegisterResponse } from '@/types/register.type.ts'
+import type { RegisterData, RegisterResponse } from '@/types/auth.types'
 
 export const registerFetch = async (data: RegisterData): Promise<RegisterResponse> => {
   const response = await axios.post<RegisterResponse>(

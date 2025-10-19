@@ -1,11 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-
-interface UserData {
-  firstname: string
-  lastname: string
-  avatar?: string
-}
+import type { UserData } from '@/types/user.types'
 
 interface UserAvatarProps {
   user: UserData | null | undefined

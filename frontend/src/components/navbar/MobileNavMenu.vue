@@ -12,39 +12,10 @@ import DangerAlert from '@/components/ui/alert/DangerAlert.vue'
 import MenuLogo from '../logos/MenuLogo.vue'
 import UserAvatar from './UserAvatar.vue'
 import AuthButtons from './AuthButtons.vue'
-
-interface UserData {
-  firstname: string
-  lastname: string
-  avatar?: string
-  email: string
-}
-
-interface MenuItem {
-  title: string
-  url: string
-  description?: string
-  icon?: any
-  items?: MenuItem[]
-}
-
-interface LogoConfig {
-  url: string
-  src: string
-  alt: string
-  title: string
-}
-
-interface AuthConfig {
-  login: {
-    title: string
-    url: string
-  }
-  signup: {
-    title: string
-    url: string
-  }
-}
+import type { UserData } from '@/types/user.types'
+import type { MenuItem } from '@/types/menu.types'
+import type { LogoConfig } from '@/types/logo.types'
+import type { AuthConfig } from '@/types/auth.types'
 
 interface MobileNavMenuProps {
   logo: LogoConfig

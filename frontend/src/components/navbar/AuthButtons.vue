@@ -1,16 +1,6 @@
 <script setup lang="ts">
 import { Button } from '@/components/ui/button'
-
-interface AuthConfig {
-  login: {
-    title: string
-    url: string
-  }
-  signup: {
-    title: string
-    url: string
-  }
-}
+import type { AuthConfig } from '@/types/auth.types'
 
 interface AuthButtonsProps {
   auth: AuthConfig

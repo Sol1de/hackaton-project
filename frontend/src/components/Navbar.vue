@@ -16,49 +16,13 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from '@/components/ui/navigation-menu'
+import type { MenuItem } from '@/types/menu.types'
+import type { NavbarProps } from '@/types/navbar.types'
 
 const authStore = useAuthStore()
 const router = useRouter()
 const isLoggingOut = ref(false)
 const logoutError = ref<string[]>([])
-
-interface MenuItem {
-  title: string
-  url: string
-  description?: string
-  icon?: any
-  items?: MenuItem[]
-}
-
-interface UserData {
-  firstname: string
-  lastname: string
-  avatar?: string
-  email: string
-}
-
-interface NavbarProps {
-  isAuthenticated?: boolean
-  user?: UserData
-  logo?: {
-    url: string
-    src: string
-    alt: string
-    title: string
-  }
-  menu?: MenuItem[]
-  auth?: {
-    login: {
-      title: string
-      url: string
-    }
-    signup: {
-      title: string
-      url: string
-    }
-  }
-  onLogout?: () => void
-}
 
 const props = withDefaults(defineProps<NavbarProps>(), {
   isAuthenticated: false,
