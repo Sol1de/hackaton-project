@@ -17,12 +17,23 @@ import {
   NavigationMenuTrigger,
 } from '@/components/ui/navigation-menu'
 import type { MenuItem } from '@/types/menu.types'
-import type { NavbarProps } from '@/types/navbar.types'
+import type { UserData } from '@/types/user.types'
+import type { LogoConfig } from '@/types/logo.types'
+import type { AuthConfig } from '@/types/auth.types'
 
 const authStore = useAuthStore()
 const router = useRouter()
 const isLoggingOut = ref(false)
 const logoutError = ref<string[]>([])
+
+interface NavbarProps {
+  isAuthenticated?: boolean
+  user?: UserData
+  logo?: LogoConfig
+  menu?: MenuItem[]
+  auth?: AuthConfig
+  onLogout?: () => void
+}
 
 const props = withDefaults(defineProps<NavbarProps>(), {
   isAuthenticated: false,
