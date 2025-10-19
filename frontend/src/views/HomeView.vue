@@ -6,8 +6,11 @@
 </script>
 
 <template>
-  <Navbar />
-  <Hero />
-  <Blog />
-  <Footer />
+  <div class="flex flex-col px-5 lg:px-0">
+    <Navbar />
+    <Hero />
+    <Blog />
+    <Footer />
+  </div>
+
 </template>
