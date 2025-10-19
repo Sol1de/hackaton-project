@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Button } from '@/components/ui/button'
+import { ButtonLink } from '@/components/ui/button'
 import type { AuthButtonsProps } from '@/types/props/navbar.props'
 
 const props = withDefaults(defineProps<AuthButtonsProps>(), {
@@ -10,31 +10,31 @@ const props = withDefaults(defineProps<AuthButtonsProps>(), {
 <template>
   <!-- Desktop variant -->
   <template v-if="variant === 'desktop'">
-    <Button
+    <ButtonLink
       variant="outline"
-      :href="auth.login.url"
+      :to="auth.login.url"
     >
       {{ auth.login.title }}
-    </Button>
-    <Button
+    </ButtonLink>
+    <ButtonLink
       variant="default"
-      :href="auth.signup.url">
+      :to="auth.signup.url">
       {{ auth.signup.title }}
-    </Button>
+    </ButtonLink>
   </template>
 
   <!-- Mobile variant -->
   <template v-else>
-    <Button
+    <ButtonLink
       variant="outline"
-      :href="auth.login.url">
+      :to="auth.login.url">
       {{ auth.login.title }}
-    </Button>
-    <Button
+    </ButtonLink>
+    <ButtonLink
       variant="default"
-      :href="auth.signup.url"
+      :to="auth.signup.url"
     >
       {{ auth.signup.title }}
-    </Button>
+    </ButtonLink>
   </template>
 </template>
