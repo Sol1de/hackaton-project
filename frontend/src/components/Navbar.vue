@@ -17,6 +17,8 @@ import {
 } from 'lucide-vue-next'
 import { ref, computed } from 'vue'
 import { useAuthStore } from '@/stores/auth'
+import { logoutFetch } from '@/api/logout.fetch'
+import { useRouter } from 'vue-router'
 import {
   AccordionContent,
   AccordionItem,
@@ -28,6 +30,7 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
 } from 'radix-vue'
+import { HoverCard, HoverCardTrigger, HoverCardContent } from '@/components/ui/hover-card'
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -40,6 +43,8 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/co
 import { Button } from '@/components/ui/button'
 
 const authStore = useAuthStore()
+const router = useRouter()
+const isLoggingOut = ref(false)
 
 interface MenuItem {
   title: string
@@ -139,7 +144,8 @@ const nonAuthenticatedMenu: MenuItem[] = [
 ]
 
 // Use authStore values, with props as optional override
-const isLogged = ref(authStore.isAuthenticated)
+// Make isLogged reactive to authStore changes
+const isLogged = computed(() => authStore.isAuthenticated)
 
 
 const currentUser = computed(() => props.user || authStore.user)
@@ -171,10 +177,32 @@ const userMenuItems = computed(() => [
   },
 ])
 
-const handleLogout = () => {
-  authStore.clearAuth()
-  if (props.onLogout) {
-    props.onLogout()
+const handleLogout = async () => {
+  if (isLoggingOut.value) return // Prevent double-clicking
+
+  try {
+    isLoggingOut.value = true
+
+    // Call the logout API
+    await logoutFetch()
+
+    // Clear auth store after successful logout
+    authStore.clearAuth()
+
+    // Call the optional onLogout callback
+    if (props.onLogout) {
+      props.onLogout()
+    }
+
+    // Redirect to home page
+    await router.push('/')
+  } catch (error) {
+    console.error('Logout failed:', error)
+    // Even if the API call fails, clear local auth for security
+    authStore.clearAuth()
+    await router.push('/')
+  } finally {
+    isLoggingOut.value = false
   }
 }
 
@@ -271,12 +299,12 @@ const getUserInitials = computed(() => {
             </Button>
           </template>
 
-          <!-- Authenticated: Show user dropdown menu -->
+          <!-- Authenticated: Show user hover card menu -->
           <template v-else>
-            <DropdownMenuRoot>
-              <DropdownMenuTrigger as-child>
+            <HoverCard :open-delay="200" :close-delay="100">
+              <HoverCardTrigger as-child>
                 <button
-                  class="flex items-center gap-2 rounded-full p-1 hover:bg-muted transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                  class="cursor-pointer flex items-center gap-2 rounded-full p-1 hover:bg-muted transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
                 >
                   <div v-if="currentUser?.avatar" class="size-8 rounded-full overflow-hidden">
                     <img
@@ -292,9 +320,10 @@ const getUserInitials = computed(() => {
                     {{ getUserInitials }}
                   </div>
                 </button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent
+              </HoverCardTrigger>
+              <HoverCardContent
                 align="end"
+                :side-offset="8"
                 class="w-56 bg-popover text-popover-foreground border border-border rounded-md shadow-md p-1"
               >
                 <!-- User info header -->
@@ -306,30 +335,31 @@ const getUserInitials = computed(() => {
                 </div>
 
                 <!-- Menu items -->
-                <DropdownMenuItem v-for="item in userMenuItems" :key="item.title" as-child>
+                <div class="flex flex-col">
                   <a
+                    v-for="item in userMenuItems"
+                    :key="item.title"
                     :href="item.url"
-                    class="flex items-center gap-2 px-2 py-1.5 text-sm cursor-pointer rounded-sm hover:bg-muted focus:bg-muted outline-none"
+                    class="flex items-center gap-2 px-2 py-1.5 text-sm cursor-pointer rounded-sm hover:bg-muted focus:bg-muted outline-none transition-colors"
                   >
                     <component :is="item.icon" class="size-4" />
                     {{ item.title }}
                   </a>
-                </DropdownMenuItem>
+                </div>
 
-                <DropdownMenuSeparator class="my-1 h-px bg-border" />
+                <div class="my-1 h-px bg-border" />
 
                 <!-- Logout -->
-                <DropdownMenuItem as-child>
-                  <button
-                    @click="handleLogout"
-                    class="flex w-full items-center gap-2 px-2 py-1.5 text-sm cursor-pointer rounded-sm hover:bg-muted focus:bg-muted outline-none text-destructive"
-                  >
-                    <LogOut class="size-4" />
-                    Log Out
-                  </button>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenuRoot>
+                <button
+                  @click="handleLogout"
+                  :disabled="isLoggingOut"
+                  class="flex w-full items-center gap-2 px-2 py-1.5 text-sm cursor-pointer rounded-sm hover:bg-muted focus:bg-muted outline-none text-destructive transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  <LogOut class="size-4" />
+                  {{ isLoggingOut ? 'Logging out...' : 'Log Out' }}
+                </button>
+              </HoverCardContent>
+            </HoverCard>
           </template>
         </div>
       </nav>
@@ -450,10 +480,11 @@ const getUserInitials = computed(() => {
                   </a>
                   <button
                     @click="handleLogout"
-                    class="flex items-center gap-2 px-2 py-2 text-sm font-medium rounded-md hover:bg-muted transition-colors text-destructive"
+                    :disabled="isLoggingOut"
+                    class="flex items-center gap-2 px-2 py-2 text-sm font-medium rounded-md hover:bg-muted transition-colors text-destructive disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     <LogOut class="size-4" />
-                    Log Out
+                    {{ isLoggingOut ? 'Logging out...' : 'Log Out' }}
                   </button>
                 </div>
 
