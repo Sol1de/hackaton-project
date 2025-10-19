@@ -183,10 +183,6 @@ const getUserInitials = computed(() => {
   if (!user) return 'U'
   return `${user.firstname.charAt(0)}${user.lastname.charAt(0)}`.toUpperCase()
 })
-
-watchEffect(() => {
-  console.log(isLogged.value)
-})
 </script>
 
 <template>
