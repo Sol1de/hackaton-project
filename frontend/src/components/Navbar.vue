@@ -41,10 +41,12 @@ import {
 } from '@/components/ui/navigation-menu'
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
 import { Button } from '@/components/ui/button'
+import DangerAlert from '@/components/ui/alert/DangerAlert.vue'
 
 const authStore = useAuthStore()
 const router = useRouter()
 const isLoggingOut = ref(false)
+const logoutError = ref<string[]>([])
 
 interface MenuItem {
   title: string
@@ -100,7 +102,7 @@ const props = withDefaults(defineProps<NavbarProps>(), {
 
 const isSheetOpen = ref(false)
 
-// Authenticated menu: Home/Feed, Explore, Create Post, Users
+// Authenticated menu
 const authenticatedMenu: MenuItem[] = [
   {
     title: 'Home',
@@ -124,7 +126,7 @@ const authenticatedMenu: MenuItem[] = [
   },
 ]
 
-// Non-authenticated menu: Home, Explore, About
+// Non-authenticated
 const nonAuthenticatedMenu: MenuItem[] = [
   {
     title: 'Home',
@@ -178,29 +180,23 @@ const userMenuItems = computed(() => [
 ])
 
 const handleLogout = async () => {
-  if (isLoggingOut.value) return // Prevent double-clicking
+  // Clear any previous errors
+  logoutError.value = []
 
   try {
     isLoggingOut.value = true
-
-    // Call the logout API
     await logoutFetch()
-
-    // Clear auth store after successful logout
     authStore.clearAuth()
 
-    // Call the optional onLogout callback
     if (props.onLogout) {
       props.onLogout()
     }
 
-    // Redirect to home page
     await router.push('/')
   } catch (error) {
     console.error('Logout failed:', error)
-    // Even if the API call fails, clear local auth for security
-    authStore.clearAuth()
-    await router.push('/')
+    const errorMessage = error instanceof Error ? error.message : 'Failed to logout. Please try again.'
+    logoutError.value = [errorMessage]
   } finally {
     isLoggingOut.value = false
   }
@@ -358,6 +354,11 @@ const getUserInitials = computed(() => {
                   <LogOut class="size-4" />
                   {{ isLoggingOut ? 'Logging out...' : 'Log Out' }}
                 </button>
+
+                <!-- Logout Error Alert -->
+                <div v-if="logoutError.length > 0" class="px-1.5">
+                  <DangerAlert :errors="logoutError" />
+                </div>
               </HoverCardContent>
             </HoverCard>
           </template>
@@ -486,6 +487,11 @@ const getUserInitials = computed(() => {
                     <LogOut class="size-4" />
                     {{ isLoggingOut ? 'Logging out...' : 'Log Out' }}
                   </button>
+
+                  <!-- Logout Error Alert (mobile) -->
+                  <div v-if="logoutError.length > 0" class="mt-2">
+                    <DangerAlert :errors="logoutError" />
+                  </div>
                 </div>
 
                 <!-- Auth buttons for non-authenticated users (mobile) -->
