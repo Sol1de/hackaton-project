@@ -41,6 +41,18 @@ This is a full-stack social media platform built with a **Node.js/Express backen
 
 ---
 
+## Database Schema
+
+### Database Relationships
+
+The diagram above illustrates the relationships between the four main collections in the database:
+- **Users** → **Posts** (one-to-many)
+- **Users** → **Tokens** (one-to-many)
+- **Users** → **Comments** (one-to-many)
+- **Posts** → **Comments** (one-to-many)
+
+![Database Schema](./assets/database-schema.png)
+
 ## Tech Stack
 
 ### Backend
@@ -529,8 +541,6 @@ The platform uses a custom JWT authentication system:
 - Example: `UserService.updateUser()` verifies `user._id === userId`
 
 ---
-
-## Database Schema
 
 ### User Collection
 
