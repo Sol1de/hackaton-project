@@ -2,7 +2,7 @@
 import { Home, Compass, PlusCircle, Users, User, FileText, Settings, Info } from 'lucide-vue-next'
 import { ref, computed } from 'vue'
 import { useAuthStore } from '@/stores/auth'
-import { logoutFetch } from '@/api/logout.fetch'
+import { logoutFetch } from '@/api/auth.fetch'
 import { useRouter } from 'vue-router'
 import MenuLogo from '@/components/logos/MenuLogo.vue'
 import UserDropdownMenu from '@/components/navbar/UserDropdownMenu.vue'
