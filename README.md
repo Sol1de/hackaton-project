@@ -900,12 +900,3 @@ This is a hackathon project created by **Enguerrand**, **Romain**, and **Olivier
 ## License
 
 This project is created for educational purposes.
-
----
-
-## Support
-
-For issues, questions, or contributions, please contact the team members:
-- Enguerrand
-- Romain
-- Olivier
