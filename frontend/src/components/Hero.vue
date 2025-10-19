@@ -24,7 +24,7 @@ interface HeroProps {
 }
 
 const props = withDefaults(defineProps<HeroProps>(), {
-  badge: '( Your Website Builder',
+  badge: 'Your Website Builder',
   heading: 'Blocks Built With Shadcn & Tailwind',
   description:
     'Finely crafted components built with React, Tailwind and Shadcn UI. Developers can copy and paste these blocks directly into their project.',
