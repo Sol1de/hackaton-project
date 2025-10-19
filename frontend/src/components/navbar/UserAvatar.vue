@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar'
 import type { UserAvatarProps } from '@/types/props/navbar.props'
 
 const props = withDefaults(defineProps<UserAvatarProps>(), {
@@ -37,21 +38,19 @@ const getUserInitials = computed(() => {
 </script>
 
 <template>
-  <div v-if="user?.avatar" :class="[sizeClasses, 'rounded-full overflow-hidden']">
-    <img
+  <Avatar :class="sizeClasses">
+    <AvatarImage
+      v-if="user?.avatar"
       :src="user.avatar"
       :alt="`${user.firstname} ${user.lastname}`"
-      class="w-full h-full object-cover"
     />
-  </div>
-  <div
-    v-else
-    :class="[
-      sizeClasses,
-      textSizeClasses,
-      'rounded-full bg-primary text-primary-foreground flex items-center justify-center font-semibold',
-    ]"
-  >
-    {{ getUserInitials }}
-  </div>
+    <AvatarFallback
+      :class="[
+        textSizeClasses,
+        'bg-primary text-primary-foreground font-semibold',
+      ]"
+    >
+      {{ getUserInitials }}
+    </AvatarFallback>
+  </Avatar>
 </template>
