@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { Menu, LogOut } from 'lucide-vue-next'
+import { Menu, LogOut, User } from 'lucide-vue-next'
 import { ref } from 'vue'
 import {
+  Accordion,
   AccordionContent,
   AccordionItem,
-  AccordionRoot,
   AccordionTrigger,
-} from 'radix-vue'
+} from '@/components/ui/accordion'
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
 import DangerAlert from '@/components/ui/alert/DangerAlert.vue'
 import MenuLogo from '../logos/MenuLogo.vue'
@@ -59,7 +59,7 @@ const handleLogout = () => {
           </div>
 
           <!-- Navigation menu -->
-          <AccordionRoot type="single" collapsible class="flex w-full flex-col gap-4">
+          <Accordion type="single" collapsible class="flex w-full flex-col gap-4">
             <template v-for="item in menu" :key="item.title">
               <!-- Menu item with subitems -->
               <AccordionItem v-if="item.items" :value="item.title" class="border-b-0">
@@ -102,37 +102,52 @@ const handleLogout = () => {
                 {{ item.title }}
               </a>
             </template>
-          </AccordionRoot>
 
-          <!-- User menu items for authenticated users (mobile) -->
-          <div v-if="isAuthenticated" class="flex flex-col gap-2 border-t border-border pt-4">
-            <div class="text-xs font-semibold text-muted-foreground uppercase mb-2">Account</div>
-            <a
-              v-for="item in userMenuItems"
-              :key="item.title"
-              :href="item.url"
-              class="flex items-center gap-2 px-2 py-2 text-sm font-medium rounded-md hover:bg-muted transition-colors"
-            >
-              <component :is="item.icon" class="size-4" />
-              {{ item.title }}
-            </a>
-            <button
-              @click="handleLogout"
-              :disabled="isLoggingOut"
-              class="flex items-center gap-2 px-2 py-2 text-sm font-medium rounded-md hover:bg-muted transition-colors text-destructive disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              <LogOut class="size-4" />
-              {{ isLoggingOut ? 'Logging out...' : 'Log Out' }}
-            </button>
+            <!-- Account menu for authenticated users (mobile) -->
+            <AccordionItem v-if="isAuthenticated" value="Account" class="border-b-0">
+              <AccordionTrigger class="text-md py-0 font-semibold hover:no-underline">
+                <div class="flex items-center gap-2">
+                  <User class="size-5" />
+                  Account
+                </div>
+              </AccordionTrigger>
+              <AccordionContent class="mt-2">
+                <a
+                  v-for="item in userMenuItems"
+                  :key="item.title"
+                  :href="item.url"
+                  class="hover:bg-muted hover:text-accent-foreground flex select-none flex-row gap-4 rounded-md p-3 leading-none no-underline outline-none transition-colors"
+                >
+                  <div class="text-foreground">
+                    <component :is="item.icon" class="size-5 shrink-0" />
+                  </div>
+                  <div>
+                    <div class="text-sm font-semibold">{{ item.title }}</div>
+                  </div>
+                </a>
+                <button
+                  @click="handleLogout"
+                  :disabled="isLoggingOut"
+                  class="hover:bg-muted hover:text-accent-foreground flex w-full select-none flex-row gap-4 rounded-md p-3 leading-none outline-none transition-colors text-destructive disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  <div class="text-foreground">
+                    <LogOut class="size-5 shrink-0" />
+                  </div>
+                  <div>
+                    <div class="text-sm font-semibold">{{ isLoggingOut ? 'Logging out...' : 'Log Out' }}</div>
+                  </div>
+                </button>
 
-            <!-- Logout Error Alert (mobile) -->
-            <div v-if="logoutError.length > 0" class="mt-2">
-              <DangerAlert :errors="logoutError" />
-            </div>
-          </div>
+                <!-- Logout Error Alert (mobile) -->
+                <div v-if="logoutError.length > 0" class="mt-2">
+                  <DangerAlert :errors="logoutError" />
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
 
           <!-- Auth buttons for non-authenticated users (mobile) -->
-          <div v-else class="flex flex-col gap-3">
+          <div v-if="!isAuthenticated" class="flex flex-col gap-3">
             <AuthButtons :auth="auth" variant="mobile" />
           </div>
         </div>
