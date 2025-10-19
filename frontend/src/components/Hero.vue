@@ -5,8 +5,8 @@ import { Button } from '@/components/ui/button'
 
 interface HeroProps {
   badge?: string
-  heading: string
-  description: string
+  heading?: string
+  description?: string
   buttons?: {
     primary?: {
       text: string
@@ -17,7 +17,7 @@ interface HeroProps {
       url: string
     }
   }
-  image: {
+  image?: {
     src: string
     alt: string
   }

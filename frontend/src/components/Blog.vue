@@ -15,12 +15,12 @@ interface Post {
 }
 
 interface BlogProps {
-  tagline: string
-  heading: string
-  description: string
-  buttonText: string
-  buttonUrl: string
-  posts: Post[]
+  tagline?: string
+  heading?: string
+  description?: string
+  buttonText?: string
+  buttonUrl?: string
+  posts?: Post[]
 }
 
 const props = withDefaults(defineProps<BlogProps>(), {
