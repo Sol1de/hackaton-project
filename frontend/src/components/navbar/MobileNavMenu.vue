@@ -69,11 +69,11 @@ const handleLogout = () => {
                     {{ item.title }}
                   </div>
                 </AccordionTrigger>
-                <AccordionContent class="mt-2">
+                <AccordionContent class="mt-2 bg-muted/30 rounded-md p-2">
                   <a
                     v-for="subItem in item.items"
                     :key="subItem.title"
-                    class="hover:bg-muted hover:text-accent-foreground flex select-none flex-row gap-4 rounded-md p-3 leading-none no-underline outline-none transition-colors"
+                    class="hover:bg-muted/60 hover:text-accent-foreground flex select-none flex-row gap-4 rounded-md p-3 leading-none no-underline outline-none transition-colors"
                     :href="subItem.url"
                   >
                     <div class="text-foreground">
@@ -111,12 +111,12 @@ const handleLogout = () => {
                   Account
                 </div>
               </AccordionTrigger>
-              <AccordionContent class="mt-2">
+              <AccordionContent class="mt-2 bg-muted/30 rounded-md p-2">
                 <a
                   v-for="item in userMenuItems"
                   :key="item.title"
                   :href="item.url"
-                  class="hover:bg-muted hover:text-accent-foreground flex select-none flex-row gap-4 rounded-md p-3 leading-none no-underline outline-none transition-colors"
+                  class="hover:bg-muted/60 hover:text-accent-foreground flex select-none flex-row gap-4 rounded-md p-3 leading-none no-underline outline-none transition-colors"
                 >
                   <div class="text-foreground">
                     <component :is="item.icon" class="size-5 shrink-0" />
@@ -128,7 +128,7 @@ const handleLogout = () => {
                 <button
                   @click="handleLogout"
                   :disabled="isLoggingOut"
-                  class="cursor-pointer hover:bg-muted flex w-full select-none flex-row gap-4 rounded-md p-3 leading-none outline-none transition-colors text-destructive disabled:opacity-50 disabled:cursor-not-allowed"
+                  class="cursor-pointer hover:bg-muted/60 flex w-full select-none flex-row gap-4 rounded-md p-3 leading-none outline-none transition-colors text-destructive disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <div class="text-foreground">
                     <LogOut class="text-destructive size-5 shrink-0" />
