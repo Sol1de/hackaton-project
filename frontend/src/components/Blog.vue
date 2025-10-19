@@ -2,7 +2,11 @@
 import { ArrowRight } from 'lucide-vue-next'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
-import type { BlogProps } from '@/types/props/layout.props'
+import type { BlogProps, PostPreview } from '@/types/props/layout.props'
+import { getPostsFetch } from '@/api/posts.fetch.ts'
+import type { ApiError } from '@/types/error.type.ts'
+import { ref, onMounted } from 'vue'
+import DangerAlert from '@/components/ui/alert/DangerAlert.vue'
 
 const props = withDefaults(defineProps<BlogProps>(), {
   tagline: 'Latest Updates',
@@ -11,41 +15,48 @@ const props = withDefaults(defineProps<BlogProps>(), {
     'Discover the latest trends, tips, and best practices in modern web development. From UI components to design systems, stay updated with our expert insights.',
   buttonText: 'View all articles',
   buttonUrl: 'https://shadcnblocks.com',
-  posts: () => [
-    {
-      id: 'post-1',
-      title: 'Getting Started with shadcn/ui Components',
-      summary:
-        "Learn how to quickly integrate and customize shadcn/ui components in your Next.js projects. We'll cover installation, theming, and best practices for building modern interfaces.",
-      label: 'Tutorial',
-      author: 'Sarah Chen',
-      published: '1 Jan 2024',
-      url: 'https://shadcnblocks.com',
-      image: 'https://deifkwefumgah.cloudfront.net/shadcnblocks/block/placeholder-dark-1.svg'
-    },
-    {
-      id: 'post-2',
-      title: 'Building Accessible Web Applications',
-      summary:
-        "Explore how to create inclusive web experiences using shadcn/ui's accessible components. Discover practical tips for implementing ARIA labels, keyboard navigation, and semantic HTML.",
-      label: 'Accessibility',
-      author: 'Marcus Rodriguez',
-      published: '1 Jan 2024',
-      url: 'https://shadcnblocks.com',
-      image: 'https://deifkwefumgah.cloudfront.net/shadcnblocks/block/placeholder-dark-1.svg'
-    },
-    {
-      id: 'post-3',
-      title: 'Modern Design Systems with Tailwind CSS',
-      summary:
-        'Dive into creating scalable design systems using Tailwind CSS and shadcn/ui. Learn how to maintain consistency while building flexible and maintainable component libraries.',
-      label: 'Design Systems',
-      author: 'Emma Thompson',
-      published: '1 Jan 2024',
-      url: 'https://shadcnblocks.com',
-      image: 'https://deifkwefumgah.cloudfront.net/shadcnblocks/block/placeholder-dark-1.svg'
+})
+
+const posts = ref<PostPreview[]>([])
+const errors = ref<string[]>([])
+const isLoading = ref(false)
+
+const truncateContent = (content: string, maxLength: number = 100): string => {
+  if (content.length <= maxLength) return content
+  return content.substring(0, maxLength) + '...'
+}
+
+const handleGetPosts = async () => {
+  errors.value = []
+  isLoading.value = true
+
+  try {
+    const response = await getPostsFetch()
+    posts.value = response.posts.map((post) => ({
+      id: post._id,
+      title: post.title,
+      summary: truncateContent(post.content),
+      author: `${post.userId.firstname} ${post.userId.lastname}`,
+      url: '/login',
+      image: 'https://deifkwefumgah.cloudfront.net/shadcnblocks/block/placeholder-dark-1.svg',
+    }))
+  } catch (err) {
+    const responseData = (err as ApiError).response?.data
+
+    if (responseData?.errors && Array.isArray(responseData.errors)) {
+      errors.value = responseData.errors.map((error) => error.message)
+    } else if (responseData?.message) {
+      errors.value = [responseData.message]
+    } else {
+      errors.value = ['An unexpected error occurred']
     }
-  ]
+  } finally {
+    isLoading.value = false
+  }
+}
+
+onMounted(() => {
+  handleGetPosts()
 })
 </script>
 
@@ -73,7 +84,18 @@ const props = withDefaults(defineProps<BlogProps>(), {
           <ArrowRight class="ml-2 size-4" />
         </a>
       </div>
-      <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3 lg:gap-8">
+      <!-- Error Messages -->
+      <div v-if="errors.length > 0" class="w-full max-w-2xl">
+        <DangerAlert :errors="errors" />
+      </div>
+
+      <!-- Loading State -->
+      <div v-if="isLoading" class="w-full text-center">
+        <p class="text-muted-foreground text-lg">Loading posts...</p>
+      </div>
+
+      <!-- Posts Grid -->
+      <div v-else-if="posts.length > 0" class="grid gap-6 md:grid-cols-2 lg:grid-cols-3 lg:gap-8">
         <Card v-for="post in posts" :key="post.id" class="grid grid-rows-[auto_auto_1fr_auto] pt-0">
           <div class="aspect-16/9 w-full">
             <a
@@ -109,6 +131,14 @@ const props = withDefaults(defineProps<BlogProps>(), {
             </a>
           </CardFooter>
         </Card>
+      </div>
+
+      <!-- Empty State -->
+      <div
+        v-else-if="!isLoading && posts.length === 0 && errors.length === 0"
+        class="w-full text-center"
+      >
+        <p class="text-muted-foreground text-lg">No posts available yet.</p>
       </div>
     </div>
   </section>

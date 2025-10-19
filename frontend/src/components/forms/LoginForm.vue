@@ -13,9 +13,9 @@ import {
 } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { loginFetch } from '@/api/login.fetch'
+import { loginFetch } from '@/api/auth.fetch'
 import { useAuthStore } from '@/stores/auth'
-import type { ApiError } from '@/types/error.type.ts'
+import type { ApiError } from '@/types/error.type'
 import DangerAlert from '@/components/ui/alert/DangerAlert.vue'
 
 const props = defineProps<{
