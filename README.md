@@ -25,13 +25,13 @@
 ## Table of Contents
 
 - [Overview](#overview)
+- [Database Schema](#database-schema)
 - [Tech Stack](#tech-stack)
 - [Project Structure](#project-structure)
 - [Installation](#installation)
 - [Development](#development)
 - [API Documentation](#api-documentation)
 - [Authentication System](#authentication-system)
-- [Database Schema](#database-schema)
 - [Environment Variables](#environment-variables)
 - [Architecture](#architecture)
 - [Scripts](#scripts)
