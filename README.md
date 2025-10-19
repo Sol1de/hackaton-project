@@ -2,6 +2,19 @@
 
 **Team Members:** Enguerrand, Romain, Olivier
 
+---
+
+> **⚠️ Production Disclaimer**
+>
+> Due to time constraints during the hackathon, the production deployment has limited functionality. Users can:
+> - ✅ Register a new account
+> - ✅ Login and logout
+> - ✅ View posts on the landing page
+>
+> Other features (creating posts, comments, updating profiles, etc.) are not yet implemented in the production frontend but are fully functional via the API.
+
+---
+
 ## Live Deployment
 
 - **Frontend**: [https://hackaton-project-frontend.vercel.app/](https://hackaton-project-frontend.vercel.app/)
