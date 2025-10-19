@@ -1,29 +1,6 @@
 <script setup lang="ts">
 import { Icon } from "@iconify/vue";
-
-interface FooterProps {
-  logo?: {
-    url: string;
-    src: string;
-    alt: string;
-    title: string;
-  };
-  sections?: Array<{
-    title: string;
-    links: Array<{ name: string; href: string }>;
-  }>;
-  description?: string;
-  socialLinks?: Array<{
-    icon: string;
-    href: string;
-    label: string;
-  }>;
-  copyright?: string;
-  legalLinks?: Array<{
-    name: string;
-    href: string;
-  }>;
-}
+import type { FooterProps } from '@/types/props/layout.props'
 
 const props = withDefaults(defineProps<FooterProps>(), {
   logo: () => ({

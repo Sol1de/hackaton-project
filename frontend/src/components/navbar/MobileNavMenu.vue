@@ -12,21 +12,7 @@ import DangerAlert from '@/components/ui/alert/DangerAlert.vue'
 import MenuLogo from '../logos/MenuLogo.vue'
 import UserAvatar from './UserAvatar.vue'
 import AuthButtons from './AuthButtons.vue'
-import type { UserData } from '@/types/user.types'
-import type { MenuItem } from '@/types/menu.types'
-import type { LogoConfig } from '@/types/logo.types'
-import type { AuthConfig } from '@/types/auth.types'
-
-interface MobileNavMenuProps {
-  logo: LogoConfig
-  menu: MenuItem[]
-  user: UserData | null | undefined
-  isAuthenticated: boolean
-  userMenuItems: MenuItem[]
-  auth: AuthConfig
-  isLoggingOut: boolean
-  logoutError: string[]
-}
+import type { MobileNavMenuProps } from '@/types/props/navbar.props'
 
 const props = defineProps<MobileNavMenuProps>()
 const emit = defineEmits<{

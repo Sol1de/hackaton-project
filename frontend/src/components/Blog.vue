@@ -2,26 +2,7 @@
 import { ArrowRight } from 'lucide-vue-next'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
-
-interface Post {
-  id: string
-  title: string
-  summary: string
-  label: string
-  author: string
-  published: string
-  url: string
-  image: string
-}
-
-interface BlogProps {
-  tagline?: string
-  heading?: string
-  description?: string
-  buttonText?: string
-  buttonUrl?: string
-  posts?: Post[]
-}
+import type { BlogProps } from '@/types/props/layout.props'
 
 const props = withDefaults(defineProps<BlogProps>(), {
   tagline: 'Latest Updates',

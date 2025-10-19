@@ -3,15 +3,7 @@ import { LogOut } from 'lucide-vue-next'
 import { HoverCard, HoverCardTrigger, HoverCardContent } from '@/components/ui/hover-card'
 import DangerAlert from '@/components/ui/alert/DangerAlert.vue'
 import UserAvatar from './UserAvatar.vue'
-import type { UserData } from '@/types/user.types'
-import type { MenuItem } from '@/types/menu.types'
-
-interface UserDropdownMenuProps {
-  user: UserData | null | undefined
-  menuItems: MenuItem[]
-  isLoggingOut: boolean
-  logoutError: string[]
-}
+import type { UserDropdownMenuProps } from '@/types/props/navbar.props'
 
 const props = defineProps<UserDropdownMenuProps>()
 const emit = defineEmits<{

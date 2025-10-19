@@ -2,26 +2,7 @@
 import { ArrowRight, ArrowUpRight } from 'lucide-vue-next'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-
-interface HeroProps {
-  badge?: string
-  heading?: string
-  description?: string
-  buttons?: {
-    primary?: {
-      text: string
-      url: string
-    }
-    secondary?: {
-      text: string
-      url: string
-    }
-  }
-  image?: {
-    src: string
-    alt: string
-  }
-}
+import type { HeroProps } from '@/types/props/layout.props'
 
 const props = withDefaults(defineProps<HeroProps>(), {
   badge: 'Your Website Builder',

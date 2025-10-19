@@ -1,11 +1,5 @@
 <script setup lang="ts">
-interface LogoProps {
-  url: string
-  src: string
-  alt: string
-  title?: string
-  showTitle?: boolean
-}
+import type { LogoProps } from '@/types/props/logo.props'
 
 const props = withDefaults(defineProps<LogoProps>(), {
   showTitle: true,

@@ -1,11 +1,6 @@
 <script setup lang="ts">
 import { Button } from '@/components/ui/button'
-import type { AuthConfig } from '@/types/auth.types'
-
-interface AuthButtonsProps {
-  auth: AuthConfig
-  variant?: 'desktop' | 'mobile'
-}
+import type { AuthButtonsProps } from '@/types/props/navbar.props'
 
 const props = withDefaults(defineProps<AuthButtonsProps>(), {
   variant: 'desktop',

@@ -1,11 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import type { UserData } from '@/types/user.types'
-
-interface UserAvatarProps {
-  user: UserData | null | undefined
-  size?: 'sm' | 'md' | 'lg'
-}
+import type { UserAvatarProps } from '@/types/props/navbar.props'
 
 const props = withDefaults(defineProps<UserAvatarProps>(), {
   size: 'sm',
