@@ -105,7 +105,7 @@ const handleLogout = () => {
 
             <!-- Account menu for authenticated users (mobile) -->
             <AccordionItem v-if="isAuthenticated" value="Account" class="border-b-0">
-              <AccordionTrigger class="text-md py-0 font-semibold hover:no-underline">
+              <AccordionTrigger class="cursor-pointer text-md py-0 font-semibold hover:no-underline">
                 <div class="flex items-center gap-2">
                   <User class="size-5" />
                   Account
@@ -128,10 +128,10 @@ const handleLogout = () => {
                 <button
                   @click="handleLogout"
                   :disabled="isLoggingOut"
-                  class="hover:bg-muted hover:text-accent-foreground flex w-full select-none flex-row gap-4 rounded-md p-3 leading-none outline-none transition-colors text-destructive disabled:opacity-50 disabled:cursor-not-allowed"
+                  class="cursor-pointer hover:bg-muted flex w-full select-none flex-row gap-4 rounded-md p-3 leading-none outline-none transition-colors text-destructive disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <div class="text-foreground">
-                    <LogOut class="size-5 shrink-0" />
+                    <LogOut class="text-destructive size-5 shrink-0" />
                   </div>
                   <div>
                     <div class="text-sm font-semibold">{{ isLoggingOut ? 'Logging out...' : 'Log Out' }}</div>
