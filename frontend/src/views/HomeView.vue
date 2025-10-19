@@ -1,8 +1,7 @@
 <script setup lang="ts">
+import Navbar from '@/components/Navbar.vue'
 </script>
 
 <template>
-  <main>
-    <h1>Hello World !</h1>
-  </main>
+  <Navbar />
 </template>
