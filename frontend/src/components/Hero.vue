@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ArrowRight, ArrowUpRight } from 'lucide-vue-next'
 import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
 
 interface HeroProps {
   badge?: string
@@ -60,21 +61,21 @@ const props = withDefaults(defineProps<HeroProps>(), {
             {{ description }}
           </p>
           <div class="flex w-full flex-col justify-center gap-2 sm:flex-row lg:justify-start">
-            <a
+            <Button
+              variant="default"
               v-if="buttons?.primary"
               :href="buttons.primary.url"
-              class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground shadow hover:bg-primary/90 h-9 px-4 py-2 w-full sm:w-auto"
             >
               {{ buttons.primary.text }}
-            </a>
-            <a
+            </Button>
+            <Button
+              variant="outline"
               v-if="buttons?.secondary"
               :href="buttons.secondary.url"
-              class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2 w-full sm:w-auto"
             >
               {{ buttons.secondary.text }}
               <ArrowRight class="size-4" />
-            </a>
+            </Button>
           </div>
         </div>
         <img :src="image.src" :alt="image.alt" class="max-h-96 w-full rounded-md object-cover" />
