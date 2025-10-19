@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 import type { HeroProps } from '@/types/props/layout.props'
 
 const props = withDefaults(defineProps<HeroProps>(), {
-  badge: 'Share Your Stories',
+  badge: 'Share Your Posts',
   heading: 'Welcome to PostScriptum',
   description:
     'A modern blogging platform where your thoughts matter. Share your stories, connect with readers, and build your community. Express yourself with elegant writing tools designed for creators.',
